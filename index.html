@@ -3,168 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Apps Hub</title>
+<title>Unblocked Hub</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
-body { background:#f1f3f4; color:#000; }
+* {margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif;}
+body {background:#0d0d0d; color:#fff;}
+header {width:100%; padding:20px 30px; background:#111; display:flex; justify-content: space-between; align-items:center; border-bottom:1px solid #222;}
+.logo {font-size:1.5rem; font-weight:bold; color:#00d0ff;}
+.search input {width:300px; padding:10px; border-radius:20px; border:none; outline:none; background:#222; color:#fff;}
 
-header { width:100%; padding:20px; background:#fff; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #ccc; }
-header h1 { color:#1a73e8; font-size:2rem; }
+/* Netflix-style sections */
+section {padding:40px;}
+h2 {margin-bottom:15px; font-size:1.8rem; border-left:4px solid #00d0ff; padding-left:10px;}
+.scroll-list {display:flex; overflow-x:auto; gap:20px; padding-bottom:10px;}
+.item {min-width:250px; height:150px; background:#1a1a1a; border-radius:12px; flex-shrink:0; display:flex; justify-content:center; align-items:center; font-size:1.2rem; border:1px solid #222; transition:0.2s; cursor:pointer; text-align:center;}
+.item:hover {background:#222; transform:scale(1.05);}
+footer {text-align:center; padding:30px; background:#111; border-top:1px solid #222; margin-top:40px;}
 
-.dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  padding:40px;
-  max-width:1000px;
-  margin:0 auto;
-}
+/* password popup */
+#password-box {display:none; flex-direction:column; gap:10px; background:white; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.2); position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; color:#000;}
+#password-box input {padding:10px; border:1px solid #ccc; border-radius:8px; width:250px;}
+#password-box button {padding:10px; border:none; border-radius:8px; background:#00d0ff; color:white; cursor:pointer; font-size:1rem;}
+#wrong {color:red; display:none; text-align:center;}
+@keyframes shake {0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(5px);}75%{transform:translateX(-5px);}100%{transform:translateX(0);}}
 
-.app-tile {
-  height:120px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  border-radius:12px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.2);
-  transition:0.2s ease;
-  cursor:pointer;
-  font-weight:bold;
-  color:white;
-  font-size:1rem;
-}
-
-.app-tile:hover {
-  transform:scale(1.05);
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
-}
-
-/* ClassLink-style colors for each app */
-.accelerate { background:#f9a825; }  /* yellow */
-.destiny { background:#1976d2; }      /* blue */
-.studyisland { background:#43a047; }  /* green */
-.googleclassroom { background:#1a73e8; }
-.hmh { background:#e53935; }          /* red */
-.iready { background:#8e24aa; }       /* purple */
-.ixl { background:#fb8c00; }          /* orange */
-.progresslearning { background:#00bcd4; } /* cyan */
-.safarimonte { background:#6d4c41; }   /* brown */
-.savvaseasy { background:#d32f2f; }   /* dark red */
-.tci { background:#5e35b1; }          /* dark purple */
-
-#password-box { display:none; flex-direction:column; gap:10px; background:white; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.2); position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; }
-#password-box input { padding:10px; border:1px solid #ccc; border-radius:8px; width:250px; }
-#password-box button { padding:10px; border:none; border-radius:8px; background:#1a73e8; color:white; cursor:pointer; font-size:1rem; }
-#wrong { color:red; display:none; text-align:center; }
-@keyframes shake { 0% {transform:translateX(0);}25% {transform:translateX(-5px);}50% {transform:translateX(5px);}75% {transform:translateX(-5px);}100% {transform:translateX(0);} }
-
-#real-site { display:none; }
-body.real-mode { background:#0d0d0d; color:#fff; }
-header.real-header { width: 100%; padding: 20px 30px; background: #111; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
-.logo { font-size: 1.5rem; font-weight: bold; color: #00d0ff; cursor: pointer; }
-.search { width: 300px; }
-.search input { width: 100%; padding: 10px; border-radius: 20px; border: none; outline: none; background: #222; color: #fff; }
-section { padding: 40px; }
-h2 { margin-bottom: 15px; font-size: 1.8rem; border-left: 4px solid #00d0ff; padding-left: 10px; }
-.scroll-list { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 10px; }
-.item { min-width: 200px; height: 120px; background: #1a1a1a; border-radius: 12px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; border: 1px solid #222; transition: 0.2s; }
-.item:hover { background: #222; transform: scale(1.05); cursor: pointer; }
-footer { text-align:center; padding:30px; background:#111; border-top:1px solid #222; margin-top:40px; }
+/* hide real site at first */
+#real-site {display:none;}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>My Apps</h1>
-</header>
-
-<div class="dashboard">
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile accelerate">Accelerate Learning</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile destiny">Destiny LTI</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile studyisland">Edmentum - Study Island</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile googleclassroom">Google Classroom</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile hmh">HMH</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile iready">I-Ready</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile ixl">IXL</div></a>
-  <a onclick="showPassword()" class="app-tile progresslearning">Progress Learning</a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile safarimonte">Safari Montage</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile savvaseasy">Savvas Easy Bridge</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile tci">TCI SSO - LTI</div></a>
+<!-- Apps dashboard -->
+<div id="apps-dashboard">
+  <header>
+    <div class="logo">My Apps</div>
+    <div class="search"><input type="text" placeholder="Search apps..."></div>
+  </header>
+  <div class="scroll-list">
+    <div class="item">Accelerate Learning</div>
+    <div class="item">Destiny LTI</div>
+    <div class="item">Edmentum - Study Island</div>
+    <div class="item">Google Classroom</div>
+    <div class="item">HMH</div>
+    <div class="item" onclick="showPassword()">Progress Learning</div>
+    <div class="item">I-Ready</div>
+    <div class="item">IXL</div>
+    <div class="item">Safari Montage</div>
+    <div class="item">Savvas Easy Bridge</div>
+    <div class="item">TCI SSO - LTI</div>
+  </div>
 </div>
 
-<!-- Password popup for Progress Learning -->
+<!-- Password popup -->
 <div id="password-box">
   <input id="passInput" type="password" placeholder="Enter Password">
   <button onclick="checkPassword()">Enter</button>
   <div id="wrong">Incorrect password</div>
 </div>
 
-<!-- ---------------- REAL SITE (UNBLOCKED HUB) ---------------- -->
+<!-- Real Unblocked Hub -->
 <div id="real-site">
-  <header class="real-header">
+  <header>
     <div class="logo">Unblocked Hub</div>
     <div class="search"><input type="text" placeholder="Search games, movies, shows, music..."></div>
   </header>
 
+  <!-- Games -->
   <section>
     <h2>Top Games:</h2>
     <div class="scroll-list">
-      <a href="https://quiz-70.github.io/repo1/lesson-168/" target="_blank"><div class="item">Retro Bowl</div></a>
-      <a href="https://quiz-70.github.io/repo1/lesson-61/" target="_blank"><div class="item">Drive Mad</div></a>
-      <a href="https://quiz-70.github.io/repo3/lesson-540/" target="_blank"><div class="item">College Retro Bowl</div></a>
-      <a href="https://quiz-70.github.io/repo1/lesson-116/" target="_blank"><div class="item">Minecraft</div></a>
-      <a href="https://quiz-70.github.io/repo2/lesson-244/" target="_blank"><div class="item">1V1.LOL</div></a>
-      <a href="https://startmyeducation.top/signin.html" target="_blank"><div class="item">Water: Code is funni</div></a>
+      <div class="item">Retro Bowl</div>
+      <div class="item">Drive Mad</div>
+      <div class="item">Minecraft</div>
+      <div class="item">1V1.LOL</div>
     </div>
   </section>
 
+  <!-- Movies -->
   <section>
     <h2>Movies:</h2>
     <div class="scroll-list">
-      <div class="item">the-lorax</div>
+      <div class="item">The Lorax</div>
+      <div class="item">Avengers</div>
+      <div class="item">Inception</div>
     </div>
   </section>
 
+  <!-- TV Shows -->
   <section>
     <h2>TV Shows:</h2>
     <div class="scroll-list">
       <div class="item">Show 1</div>
       <div class="item">Show 2</div>
       <div class="item">Show 3</div>
-      <div class="item">Show 4</div>
-      <div class="item">Show 5</div>
     </div>
   </section>
 
+  <!-- Music -->
   <section>
     <h2>Music Artists:</h2>
     <div class="scroll-list">
-      <a href="https://sites.google.com/view/applegames-apple/music/pharrell-williams" target="_blank"><div class="item">Pharrell Williams</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/music/leon-thomas" target="_blank"><div class="item">Leon Thomas</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/music/katseye" target="_blank"><div class="item">Katseye</div></a>
+      <div class="item">Pharrell Williams</div>
+      <div class="item">Leon Thomas</div>
+      <div class="item">Katseye</div>
     </div>
   </section>
 
+  <!-- YouTube -->
   <section>
     <h2>YouTube:</h2>
     <div class="scroll-list">
-      <a href="https://sites.google.com/view/applegames-apple/youtube/mrbeast" target="_blank"><div class="item">MrBeast</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/jynxzi" target="_blank"><div class="item">Jynxzi</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/coryxkenshin" target="_blank"><div class="item">CoryxKenshin</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/joe-bartolozzi" target="_blank"><div class="item">Joe Bartolozzi</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/ludwig" target="_blank"><div class="item">Ludwig</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/sur-ronster" target="_blank"><div class="item">Sur Ronster</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/fern" target="_blank"><div class="item">Fern</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/sml" target="_blank"><div class="item">SML</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/derekfdb" target="_blank"><div class="item">DerekFDB</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/ish" target="_blank"><div class="item">Ish</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/tyler-blanchard" target="_blank"><div class="item">Tyler Blanchard</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/dougdoug" target="_blank"><div class="item">DougDoug</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/ice-711" target="_blank"><div class="item">Ice 711</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/swiss001" target="_blank"><div class="item">Swiss001</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/supersnailboy" target="_blank"><div class="item">SuperSnailBoy</div></a>
-      <a href="https://sites.google.com/view/applegames-apple/youtube/aquatic-neptune" target="_blank"><div class="item">Aquatic Neptune</div></a>
+      <div class="item">MrBeast</div>
+      <div class="item">Jynxzi</div>
+      <div class="item">CoryxKenshin</div>
+    </div>
+  </section>
+
+  <!-- Soundboards -->
+  <section>
+    <h2>Soundboards:</h2>
+    <div class="scroll-list">
+      <div class="item">Airhorn</div>
+      <div class="item">Meme Sounds</div>
+      <div class="item">Funny Clips</div>
+    </div>
+  </section>
+
+  <!-- Emulators -->
+  <section>
+    <h2>Emulators:</h2>
+    <div class="scroll-list">
+      <div class="item">NES Emulator</div>
+      <div class="item">SNES Emulator</div>
+      <div class="item">GBA Emulator</div>
+    </div>
+  </section>
+
+  <!-- Forms -->
+  <section>
+    <h2>Forms:</h2>
+    <div class="scroll-list">
+      <div class="item">Google Form 1</div>
+      <div class="item">Google Form 2</div>
+      <div class="item">Quiz Form</div>
     </div>
   </section>
 
@@ -173,26 +153,21 @@ footer { text-align:center; padding:30px; background:#111; border-top:1px solid 
 
 <script>
 function showPassword() {
-  document.getElementById("password-box").style.display = "flex";
+  document.getElementById("password-box").style.display="flex";
 }
-
 function checkPassword() {
   let input = document.getElementById("passInput").value;
   let wrong = document.getElementById("wrong");
-
-  if (input === "homework67") {
-    document.getElementById("password-box").style.display = "none";
-    document.getElementById("real-site").style.display = "block";
-    document.body.classList.add("real-mode");
+  if(input==="homework67") {
+    document.getElementById("apps-dashboard").style.display="none";
+    document.getElementById("password-box").style.display="none";
+    document.getElementById("real-site").style.display="block";
   } else {
-    wrong.style.display = "block";
-    document.getElementById("password-box").style.animation = "shake 0.3s";
-    setTimeout(() => {
-      document.getElementById("password-box").style.animation = "";
-    }, 300);
+    wrong.style.display="block";
+    document.getElementById("password-box").style.animation="shake 0.3s";
+    setTimeout(()=>{document.getElementById("password-box").style.animation="";},300);
   }
 }
 </script>
-
 </body>
 </html>
