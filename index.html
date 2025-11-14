@@ -5,18 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Apps Hub</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family: Arial,sans-serif; }
+* { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
 body { background:#f1f3f4; color:#000; }
+
 header { width:100%; padding:20px; background:#fff; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #ccc; }
 header h1 { color:#1a73e8; font-size:2rem; }
-.dashboard { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; padding:40px; }
-.app-tile { width:180px; height:120px; background:#fff; display:flex; justify-content:center; align-items:center; text-align:center; border-radius:12px; border:1px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.2s ease; cursor:pointer; font-weight:bold; }
-.app-tile:hover { transform:scale(1.05); box-shadow:0 4px 10px rgba(0,0,0,0.2); }
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  padding:40px;
+  max-width:1000px;
+  margin:0 auto;
+}
+
+.app-tile {
+  height:120px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  border-radius:12px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.2);
+  transition:0.2s ease;
+  cursor:pointer;
+  font-weight:bold;
+  color:white;
+  font-size:1rem;
+}
+
+.app-tile:hover {
+  transform:scale(1.05);
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* ClassLink-style colors for each app */
+.accelerate { background:#f9a825; }  /* yellow */
+.destiny { background:#1976d2; }      /* blue */
+.studyisland { background:#43a047; }  /* green */
+.googleclassroom { background:#1a73e8; }
+.hmh { background:#e53935; }          /* red */
+.iready { background:#8e24aa; }       /* purple */
+.ixl { background:#fb8c00; }          /* orange */
+.progresslearning { background:#00bcd4; } /* cyan */
+.safarimonte { background:#6d4c41; }   /* brown */
+.savvaseasy { background:#d32f2f; }   /* dark red */
+.tci { background:#5e35b1; }          /* dark purple */
+
 #password-box { display:none; flex-direction:column; gap:10px; background:white; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.2); position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; }
 #password-box input { padding:10px; border:1px solid #ccc; border-radius:8px; width:250px; }
 #password-box button { padding:10px; border:none; border-radius:8px; background:#1a73e8; color:white; cursor:pointer; font-size:1rem; }
 #wrong { color:red; display:none; text-align:center; }
 @keyframes shake { 0% {transform:translateX(0);}25% {transform:translateX(-5px);}50% {transform:translateX(5px);}75% {transform:translateX(-5px);}100% {transform:translateX(0);} }
+
 #real-site { display:none; }
 body.real-mode { background:#0d0d0d; color:#fff; }
 header.real-header { width: 100%; padding: 20px 30px; background: #111; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
@@ -38,17 +80,17 @@ footer { text-align:center; padding:30px; background:#111; border-top:1px solid 
 </header>
 
 <div class="dashboard">
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">Accelerate Learning</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">Destiny LTI</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">Edmentum - Study Island</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">Google Classroom</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">HMH</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">I-Ready</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">IXL</div></a>
-  <a onclick="showPassword()" class="app-tile">Progress Learning</a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">Safari Montage</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">Savvas Easy Bridge</div></a>
-  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile">TCI SSO - LTI</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile accelerate">Accelerate Learning</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile destiny">Destiny LTI</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile studyisland">Edmentum - Study Island</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile googleclassroom">Google Classroom</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile hmh">HMH</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile iready">I-Ready</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile ixl">IXL</div></a>
+  <a onclick="showPassword()" class="app-tile progresslearning">Progress Learning</a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile safarimonte">Safari Montage</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile savvaseasy">Savvas Easy Bridge</div></a>
+  <a href="https://myapps.classlink.com/home" target="_blank"><div class="app-tile tci">TCI SSO - LTI</div></a>
 </div>
 
 <!-- Password popup for Progress Learning -->
@@ -58,7 +100,7 @@ footer { text-align:center; padding:30px; background:#111; border-top:1px solid 
   <div id="wrong">Incorrect password</div>
 </div>
 
-<!-- ---------------- REAL SITE (HIDDEN AT FIRST) ---------------- -->
+<!-- ---------------- REAL SITE (UNBLOCKED HUB) ---------------- -->
 <div id="real-site">
   <header class="real-header">
     <div class="logo">Unblocked Hub</div>
