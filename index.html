@@ -7,19 +7,20 @@
 <style>
 * {margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif;}
 body {background:#0d0d0d; color:#fff;}
+
+/* Header */
 header {width:100%; padding:20px 30px; background:#111; display:flex; justify-content: space-between; align-items:center; border-bottom:1px solid #222;}
 .logo {font-size:1.5rem; font-weight:bold; color:#00d0ff;}
 .search input {width:300px; padding:10px; border-radius:20px; border:none; outline:none; background:#222; color:#fff;}
 
-/* Netflix-style sections */
-section {padding:40px;}
-h2 {margin-bottom:15px; font-size:1.8rem; border-left:4px solid #00d0ff; padding-left:10px;}
-.scroll-list {display:flex; overflow-x:auto; gap:20px; padding-bottom:10px;}
-.item {min-width:250px; height:150px; background:#1a1a1a; border-radius:12px; flex-shrink:0; display:flex; justify-content:center; align-items:center; font-size:1.2rem; border:1px solid #222; transition:0.2s; cursor:pointer; text-align:center;}
-.item:hover {background:#222; transform:scale(1.05);}
-footer {text-align:center; padding:30px; background:#111; border-top:1px solid #222; margin-top:40px;}
+/* ClassLink-style app grid */
+#apps-dashboard {padding:40px;}
+.apps-grid {display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:25px;}
+.app-tile {background:#1a1a1a; border-radius:12px; padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:0.2s; cursor:pointer; border:1px solid #222;}
+.app-tile:hover {background:#222; transform:scale(1.05);}
+.app-tile img {width:60px; height:60px; margin-bottom:10px; border-radius:12px; object-fit:contain;}
 
-/* password popup */
+/* Password popup */
 #password-box {display:none; flex-direction:column; gap:10px; background:white; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.2); position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; color:#000;}
 #password-box input {padding:10px; border:1px solid #ccc; border-radius:8px; width:250px;}
 #password-box button {padding:10px; border:none; border-radius:8px; background:#00d0ff; color:white; cursor:pointer; font-size:1rem;}
@@ -28,28 +29,36 @@ footer {text-align:center; padding:30px; background:#111; border-top:1px solid #
 
 /* hide real site at first */
 #real-site {display:none;}
+
+/* Netflix-style sections for real site */
+section {padding:40px;}
+h2 {margin-bottom:15px; font-size:1.8rem; border-left:4px solid #00d0ff; padding-left:10px;}
+.scroll-list {display:flex; overflow-x:auto; gap:20px; padding-bottom:10px;}
+.item {min-width:250px; height:150px; background:#1a1a1a; border-radius:12px; flex-shrink:0; display:flex; justify-content:center; align-items:center; font-size:1.2rem; border:1px solid #222; transition:0.2s; cursor:pointer; text-align:center;}
+.item:hover {background:#222; transform:scale(1.05);}
+footer {text-align:center; padding:30px; background:#111; border-top:1px solid #222; margin-top:40px;}
 </style>
 </head>
 <body>
 
-<!-- Apps dashboard -->
+<!-- ---------------- ClassLink-style Apps Dashboard ---------------- -->
 <div id="apps-dashboard">
   <header>
     <div class="logo">My Apps</div>
     <div class="search"><input type="text" placeholder="Search apps..."></div>
   </header>
-  <div class="scroll-list">
-    <div class="item">Accelerate Learning</div>
-    <div class="item">Destiny LTI</div>
-    <div class="item">Edmentum - Study Island</div>
-    <div class="item">Google Classroom</div>
-    <div class="item">HMH</div>
-    <div class="item" onclick="showPassword()">Progress Learning</div>
-    <div class="item">I-Ready</div>
-    <div class="item">IXL</div>
-    <div class="item">Safari Montage</div>
-    <div class="item">Savvas Easy Bridge</div>
-    <div class="item">TCI SSO - LTI</div>
+  <div class="apps-grid">
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Accelerate_Learning_Logo.png" alt="Accelerate Learning"><span>Accelerate Learning</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Destiny_Logo.png" alt="Destiny LTI"><span>Destiny LTI</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Edmentum_Logo.png" alt="Edmentum - Study Island"><span>Edmentum - Study Island</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Google_Classroom_logo.png" alt="Google Classroom"><span>Google Classroom</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/HMH_Logo.png" alt="HMH"><span>HMH</span></div>
+    <div class="app-tile" onclick="showPassword()" style="background:#00bcd4;"><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Progress_Learning_Logo.png" alt="Progress Learning"><span>Progress Learning</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/I-Ready_Logo.png" alt="I-Ready"><span>I-Ready</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/IXL_Logo.png" alt="IXL"><span>IXL</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Safari_Montage_Logo.png" alt="Safari Montage"><span>Safari Montage</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Savvas_Logo.png" alt="Savvas Easy Bridge"><span>Savvas Easy Bridge</span></div>
+    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/TCI_SSO_Logo.png" alt="TCI SSO"><span>TCI SSO - LTI</span></div>
   </div>
 </div>
 
@@ -60,7 +69,7 @@ footer {text-align:center; padding:30px; background:#111; border-top:1px solid #
   <div id="wrong">Incorrect password</div>
 </div>
 
-<!-- Real Unblocked Hub -->
+<!-- ---------------- Unblocked Hub ---------------- -->
 <div id="real-site">
   <header>
     <div class="logo">Unblocked Hub</div>
