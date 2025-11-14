@@ -1,186 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unblocked Hub</title>
-<style>
-* {margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif;}
-body {background:#0d0d0d; color:#fff;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unblocked Hub</title>
+  <style>
+    /* === GLOBAL STYLES === */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+    }
 
-/* Header */
-header {width:100%; padding:20px 30px; background:#111; display:flex; justify-content: space-between; align-items:center; border-bottom:1px solid #222;}
-.logo {font-size:1.5rem; font-weight:bold; color:#00d0ff;}
-.search input {width:300px; padding:10px; border-radius:20px; border:none; outline:none; background:#222; color:#fff;}
+    /* === PANIC BUTTON === */
+    #panic-btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 10px 15px;
+      background-color: #ff4c4c;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 1000;
+    }
+    #panic-btn:hover {
+      background-color: #ff1a1a;
+    }
 
-/* ClassLink-style app grid */
-#apps-dashboard {padding:40px;}
-.apps-grid {display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:25px;}
-.app-tile {background:#1a1a1a; border-radius:12px; padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:0.2s; cursor:pointer; border:1px solid #222;}
-.app-tile:hover {background:#222; transform:scale(1.05);}
-.app-tile img {width:60px; height:60px; margin-bottom:10px; border-radius:12px; object-fit:contain;}
+    /* === HOME SCREEN === */
+    #home-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 80px;
+    }
 
-/* Password popup */
-#password-box {display:none; flex-direction:column; gap:10px; background:white; padding:20px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.2); position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; color:#000;}
-#password-box input {padding:10px; border:1px solid #ccc; border-radius:8px; width:250px;}
-#password-box button {padding:10px; border:none; border-radius:8px; background:#00d0ff; color:white; cursor:pointer; font-size:1rem;}
-#wrong {color:red; display:none; text-align:center;}
-@keyframes shake {0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(5px);}75%{transform:translateX(-5px);}100%{transform:translateX(0);}}
+    h1 {
+      margin-bottom: 40px;
+    }
 
-/* hide real site at first */
-#real-site {display:none;}
+    .menu-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
 
-/* Netflix-style sections for real site */
-section {padding:40px;}
-h2 {margin-bottom:15px; font-size:1.8rem; border-left:4px solid #00d0ff; padding-left:10px;}
-.scroll-list {display:flex; overflow-x:auto; gap:20px; padding-bottom:10px;}
-.item {min-width:250px; height:150px; background:#1a1a1a; border-radius:12px; flex-shrink:0; display:flex; justify-content:center; align-items:center; font-size:1.2rem; border:1px solid #222; transition:0.2s; cursor:pointer; text-align:center;}
-.item:hover {background:#222; transform:scale(1.05);}
-footer {text-align:center; padding:30px; background:#111; border-top:1px solid #222; margin-top:40px;}
-</style>
+    .menu-card {
+      width: 180px;
+      height: 120px;
+      background-color: #1e1e1e;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: transform 0.2s, background-color 0.2s;
+      text-align: center;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+
+    .menu-card:hover {
+      transform: scale(1.05);
+      background-color: #333;
+    }
+
+    /* === CONTENT SCREEN === */
+    #content-screen {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      display: none;
+    }
+
+    #content-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #home-btn {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      padding: 12px 18px;
+      background-color: #ffffff20;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+      backdrop-filter: blur(5px);
+    }
+    #home-btn:hover {
+      background-color: #ffffff40;
+    }
+  </style>
 </head>
 <body>
 
-<!-- ---------------- ClassLink-style Apps Dashboard ---------------- -->
-<div id="apps-dashboard">
-  <header>
-    <div class="logo">My Apps</div>
-    <div class="search"><input type="text" placeholder="Search apps..."></div>
-  </header>
-  <div class="apps-grid">
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Accelerate_Learning_Logo.png" alt="Accelerate Learning"><span>Accelerate Learning</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Destiny_Logo.png" alt="Destiny LTI"><span>Destiny LTI</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Edmentum_Logo.png" alt="Edmentum - Study Island"><span>Edmentum - Study Island</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Google_Classroom_logo.png" alt="Google Classroom"><span>Google Classroom</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/HMH_Logo.png" alt="HMH"><span>HMH</span></div>
-    <div class="app-tile" onclick="showPassword()" style="background:#00bcd4;"><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Progress_Learning_Logo.png" alt="Progress Learning"><span>Progress Learning</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/I-Ready_Logo.png" alt="I-Ready"><span>I-Ready</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/IXL_Logo.png" alt="IXL"><span>IXL</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Safari_Montage_Logo.png" alt="Safari Montage"><span>Safari Montage</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Savvas_Logo.png" alt="Savvas Easy Bridge"><span>Savvas Easy Bridge</span></div>
-    <div class="app-tile"><img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/TCI_SSO_Logo.png" alt="TCI SSO"><span>TCI SSO - LTI</span></div>
+  <!-- PANIC BUTTON -->
+  <button id="panic-btn" onclick="panic()">Panic</button>
+
+  <!-- HOME MENU -->
+  <div id="home-screen">
+    <h1>Unblocked Hub</h1>
+    <div class="menu-container">
+      <div class="menu-card" onclick="openContent('https://example.com/game1')">Games</div>
+      <div class="menu-card" onclick="openContent('https://example.com/movies')">Movies</div>
+      <div class="menu-card" onclick="openContent('https://example.com/tvshows')">TV Shows</div>
+      <div class="menu-card" onclick="openContent('https://www.youtube.com')">YouTube</div>
+      <div class="menu-card" onclick="openContent('https://example.com/music')">Music</div>
+    </div>
   </div>
-</div>
 
-<!-- Password popup -->
-<div id="password-box">
-  <input id="passInput" type="password" placeholder="Enter Password">
-  <button onclick="checkPassword()">Enter</button>
-  <div id="wrong">Incorrect password</div>
-</div>
+  <!-- EMBEDDED CONTENT SCREEN -->
+  <div id="content-screen">
+    <iframe id="content-frame" src=""></iframe>
+    <button id="home-btn" onclick="goHome()">Home</button>
+  </div>
 
-<!-- ---------------- Unblocked Hub ---------------- -->
-<div id="real-site">
-  <header>
-    <div class="logo">Unblocked Hub</div>
-    <div class="search"><input type="text" placeholder="Search games, movies, shows, music..."></div>
-  </header>
+  <script>
+    // Open a category in the iframe
+    function openContent(url) {
+      document.getElementById('home-screen').style.display = 'none';
+      document.getElementById('content-frame').src = url;
+      document.getElementById('content-screen').style.display = 'block';
+    }
 
-  <!-- Games -->
-  <section>
-    <h2>Top Games:</h2>
-    <div class="scroll-list">
-      <div class="item" onclick="window.open('https://quiz-70.github.io/repo1/lesson-168', '_blank')">
-  Retro Bowl
-</div>
-      
-      </div>
-      <div class="item">Drive Mad</div>
-      <div class="item">Minecraft</div>
-      <div class="item">1V1.LOL</div>
-    </div>
-  </section>
+    // Go back to the menu
+    function goHome() {
+      document.getElementById('content-screen').style.display = 'none';
+      document.getElementById('content-frame').src = '';
+      document.getElementById('home-screen').style.display = 'flex';
+    }
 
-  <!-- Movies -->
-  <section>
-    <h2>Movies:</h2>
-    <div class="scroll-list">
-      <div class="item">The Lorax</div>
-      <div class="item">Avengers</div>
-      <div class="item">Inception</div>
-    </div>
-  </section>
+    // Panic button goes to Google Classroom
+    function panic() {
+      window.location.href = 'https://classroom.google.com';
+    }
+  </script>
 
-  <!-- TV Shows -->
-  <section>
-    <h2>TV Shows:</h2>
-    <div class="scroll-list">
-      <div class="item">Show 1</div>
-      <div class="item">Show 2</div>
-      <div class="item">Show 3</div>
-    </div>
-  </section>
-
-  <!-- Music -->
-  <section>
-    <h2>Music Artists:</h2>
-    <div class="scroll-list">
-      <div class="item">Pharrell Williams</div>
-      <div class="item">Leon Thomas</div>
-      <div class="item">Katseye</div>
-    </div>
-  </section>
-
-  <!-- YouTube -->
-  <section>
-    <h2>YouTube:</h2>
-    <div class="scroll-list">
-      <div class="item">MrBeast</div>
-      <div class="item">Jynxzi</div>
-      <div class="item">CoryxKenshin</div>
-    </div>
-  </section>
-
-  <!-- Soundboards -->
-  <section>
-    <h2>Soundboards:</h2>
-    <div class="scroll-list">
-      <div class="item">Airhorn</div>
-      <div class="item">Meme Sounds</div>
-      <div class="item">Funny Clips</div>
-    </div>
-  </section>
-
-  <!-- Emulators -->
-  <section>
-    <h2>Emulators:</h2>
-    <div class="scroll-list">
-      <div class="item">NES Emulator</div>
-      <div class="item">SNES Emulator</div>
-      <div class="item">GBA Emulator</div>
-    </div>
-  </section>
-
-  <!-- Forms -->
-  <section>
-    <h2>Forms:</h2>
-    <div class="scroll-list">
-      <div class="item">Google Form 1</div>
-      <div class="item">Google Form 2</div>
-      <div class="item">Quiz Form</div>
-    </div>
-  </section>
-
-  <footer>© 2025 Unblocked Hub — All rights reserved.</footer>
-</div>
-
-<script>
-function showPassword() {
-  document.getElementById("password-box").style.display="flex";
-}
-function checkPassword() {
-  let input = document.getElementById("passInput").value;
-  let wrong = document.getElementById("wrong");
-  if(input==="homework67") {
-    document.getElementById("apps-dashboard").style.display="none";
-    document.getElementById("password-box").style.display="none";
-    document.getElementById("real-site").style.display="block";
-  } else {
-    wrong.style.display="block";
-    document.getElementById("password-box").style.animation="shake 0.3s";
-    setTimeout(()=>{document.getElementById("password-box").style.animation="";},300);
-  }
-}
-</script>
 </body>
 </html>
