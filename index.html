@@ -194,8 +194,160 @@
 
 <!-- Home Button -->
 <button id="homeBtn" onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'});">Home</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unblocked Hub</title>
+<style>
+/* Basic reset */
+body,html{margin:0;padding:0;font-family:Arial, sans-serif;background:#f5f5f5;color:#000;overflow-x:hidden;}
+
+/* LaunchPad Fake Page */
+#launchpad{
+  position:relative;
+  width:100%;
+  height:100vh;
+  background:white;
+  display:flex;
+  flex-direction:column;
+}
+.topbar{
+  height:50px;
+  background:#000;
+  color:white;
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  font-size:20px;
+}
+.searchbar{
+  margin-left:auto;
+  margin-right:20px;
+  background:white;
+  color:#000;
+  border-radius:6px;
+  padding:4px 10px;
+  width:300px;
+}
+.icon-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+ gap:25px;
+ padding:50px;
+}
+.icon{
+ background:#e5e5e5;
+ border-radius:20px;
+ padding:30px 10px;
+ text-align:center;
+ cursor:pointer;
+ transition:0.2s;
+}
+.icon:hover{background:#dcdcdc;}
+
+/* Password modal */
+#pwModal{
+ position:fixed;top:0;left:0;right:0;bottom:0;
+ background:rgba(0,0,0,0.7);
+ display:none;
+ justify-content:center;
+ align-items:center;
+}
+.modal-box{
+ background:white;
+ padding:30px;
+ border-radius:12px;
+ width:300px;
+ text-align:center;
+}
+.modal-box input{
+ width:90%;padding:8px;margin-top:10px;
+}
+
+/* Fade transition */
+.fadeOut{
+ animation:fadeOut 1.2s forwards;
+}
+@keyframes fadeOut{
+ 0%{opacity:1;}100%{opacity:0;}
+}
+
+/* Hidden Hub */
+#hub{display:none;opacity:0;animation:fadeIn 1.2s forwards;}
+@keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
+
+
+/* Hub styling simplified placeholder; user previously has full content */
+</style>
+</head>
+<body>
+
+<!-- Fake LaunchPad -->
+<div id="launchpad">
+ <div class="topbar">LaunchPad <input class="searchbar" placeholder="Search"></div>
+ <div class="icon-grid">
+   <div class="icon">Accelerate Learning</div>
+   <div class="icon">Destiny LTI</div>
+   <div class="icon">Study Island</div>
+   <div class="icon">Google Classroom</div>
+   <div class="icon">HMH</div>
+   <div class="icon">i‑Ready</div>
+   <div class="icon" id="pwTrigger">Progress Learning</div>
+   <div class="icon">Safari Montage</div>
+   <div class="icon">Savvas EasyBridge</div>
+ </div>
+</div>
+
+<!-- Password Prompt -->
+<div id="pwModal">
+ <div class="modal-box">
+   <h3>Password Required</h3>
+   <input type="password" id="pwInput" placeholder="Enter password">
+   <button onclick="checkPW()">Submit</button>
+   <p id="pwMsg" style="color:red"></p>
+ </div>
+</div>
+
+<!-- REAL HUB (placeholder, user will integrate full version) -->
+<div id="hub">
+ <h1 style="padding:20px;">Unlocked Hub Loaded</h1>
+ <!-- Full Netflix-style site content gets placed here -->
+</div>
 
 <script>
+// Open password modal
+ document.getElementById('pwTrigger').onclick=()=>{
+   document.getElementById('pwModal').style.display='flex';
+ };
+
+// Password check
+function checkPW(){
+ const pw=document.getElementById('pwInput').value;
+ if(pw==="ihatehw67"){
+   document.getElementById('pwMsg').textContent="";
+   unlockHub();
+ } else {
+   document.getElementById('pwMsg').textContent="Incorrect password";
+ }
+}
+
+// Fade out LaunchPad and reveal hub
+function unlockHub(){
+ const lp=document.getElementById('launchpad');
+ lp.classList.add('fadeOut');
+ setTimeout(()=>{
+   lp.style.display='none';
+   document.getElementById('hub').style.display='block';
+ },1200);
+}
+</script>
+
+</body>
+</html>
+
+  <script>
 // Dark Mode
 document.getElementById('darkModeBtn').addEventListener('click',()=>document.body.classList.toggle('dark-mode'));
 
