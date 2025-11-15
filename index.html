@@ -14,7 +14,7 @@ body{margin:0;background:#0d0d0d;color:#fff;font-family:Arial,sans-serif;overflo
 .menuItem{background:#1b1b1b;padding:25px;border-radius:12px;font-size:22px;text-align:center;cursor:pointer;transition:.2s}
 .menuItem:hover{transform:scale(1.05);background:#272727}
 #searchBar{padding:10px;width:60%;max-width:400px;border-radius:8px;border:none;font-size:16px;display:block;margin:20px auto}
-#viewer{position:absolute;top:50px;left:0;width:100%;height:calc(100% - 50px);background:#000;display:none}
+#viewer{position:absolute;top:50px;left:0;width:100%;height:calc(100% - 50px);background:#000;display:none;z-index:100}
 #viewer iframe{width:100%;height:100%;border:none}
 #homeBtn{position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.6);padding:10px 15px;border-radius:8px;cursor:pointer;font-size:14px;border:1px solid #333}
 h2{margin-left:20px;margin-top:30px}
@@ -27,6 +27,7 @@ h2{margin-left:20px;margin-top:30px}
 .arrow-left{left:-5px}
 .arrow-right{right:-5px}
 .note{font-size:12px;opacity:0.7;margin-top:5px}
+a{color:white;text-decoration:none}
 </style>
 </head>
 <body>
@@ -42,7 +43,7 @@ h2{margin-left:20px;margin-top:30px}
 <div class="menuItem" onclick="openSection('moviesSection')">Movies</div>
 <div class="menuItem" onclick="openSection('tvSection')">TV Shows</div>
 <div class="menuItem" onclick="openSection('musicSection')">Music</div>
-<div class="menuItem"><a href="https://youtube.com" target="_blank" style="color:white;text-decoration:none;">YouTube</a></div>
+<div class="menuItem" onclick="openSection('youtubeSection')">YouTube</div>
 </div>
 
 <input type="text" id="searchBar" placeholder="Search all content..." oninput="filterItems()">
@@ -53,12 +54,13 @@ h2{margin-left:20px;margin-top:30px}
 <div class="carousel-wrapper">
 <button class="arrow arrow-left" onclick="scrollLeft('carouselTop')">&#10094;</button>
 <div class="carousel" id="carouselTop">
+<!-- Top games embedded -->
 <div class="item" onclick="playGame('https://objectstorage.us-ashburn-1.oraclecloud.com/n/idzgyfi7awwr/b/bucket-20231001-1518-rb1.0/o/index.html')">Retro Bowl</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo3/lesson-540/')">College Retro Bowl</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-61/')">Drive Mad</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo2/lesson-244/')">1v1.LOL</div>
 <div class="item" onclick="playGame('https://startmyeducation.top/signin.html')">Water<div class="note">password is funni</div></div>
-<div class="item"><a href="https://drive.google.com/uc?id=11s0WiFFQP22LbsEf5kDUjPOGobSreLJP&export=download" style="color:white;text-decoration:none;">Slime Rancher</a></div>
+<div class="item" onclick="playGame('https://drive.google.com/uc?id=11s0WiFFQP22LbsEf5kDUjPOGobSreLJP&export=download')">Slime Rancher</div>
 </div>
 <button class="arrow arrow-right" onclick="scrollRight('carouselTop')">&#10095;</button>
 </div>
@@ -67,7 +69,7 @@ h2{margin-left:20px;margin-top:30px}
 <div class="carousel-wrapper">
 <button class="arrow arrow-left" onclick="scrollLeft('carouselAll')">&#10094;</button>
 <div class="carousel" id="carouselAll">
-<!-- FULL ALL GAMES LIST -->
+<!-- ALL 100+ games embedded -->
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-116/')">Minecraft</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo2/lesson-205/')">Subway Surfers</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-27/')">Basketball Stars</div>
@@ -86,7 +88,7 @@ h2{margin-left:20px;margin-top:30px}
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-43/')">Cave War</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-59/')">Drift Boss</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo2/lesson-348/')">Cookie Clicker</div>
-<div class="item"><a href="https://drive.google.com/uc?id=1XxHYaTfzvjESWhbDqTi3PfwvCgbrIRs2&export=download" style="color:white;text-decoration:none;">Space Invaders</a></div>
+<div class="item" onclick="playGame('https://drive.google.com/uc?id=1XxHYaTfzvjESWhbDqTi3PfwvCgbrIRs2&export=download')">Space Invaders</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-23/')">Baldi's Basics</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-102/')">Iron Snout</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-2/')">Paper.io</div>
@@ -96,9 +98,9 @@ h2{margin-left:20px;margin-top:30px}
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-80/')">Flappy Bird</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-81/')">Friday Night Funkin</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-25/')">Basket Random</div>
-<div class="item"><a href="https://drive.google.com/uc?id=1yb4mOXi5J-DZOzoX33KNb5BChM2uSrU_/export=download" style="color:white;text-decoration:none;">Bad Parenting</a></div>
-<div class="item"><a href="https://drive.google.com/uc?id=1VSw2-MKgdEB86p5Hcxr8j2LzJayZxu4q&export=download" style="color:white;text-decoration:none;">Granny</a></div>
-<div class="item"><a href="https://drive.google.com/uc?id=1FFhwgTSE17YocyoeJAjFLgtM39j5GmXt&export=download" style="color:white;text-decoration:none;">Granny 2</a></div>
+<div class="item" onclick="playGame('https://drive.google.com/uc?id=1yb4mOXi5J-DZOzoX33KNb5BChM2uSrU_/view')">Bad Parenting</div>
+<div class="item" onclick="playGame('https://drive.google.com/uc?id=1VSw2-MKgdEB86p5Hcxr8j2LzJayZxu4q/view')">Granny</div>
+<div class="item" onclick="playGame('https://drive.google.com/uc?id=1FFhwgTSE17YocyoeJAjFLgtM39j5GmXt/view')">Granny 2</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-20/')">The Backrooms</div>
 <div class="item" onclick="playGame('https://www.chess.com/')">Chess</div>
 <div class="item" onclick="playGame('https://howthingsfly.si.edu/sites/default/files/unity/ControlledFlight_new/index.html')">Controlled Flight</div>
@@ -132,7 +134,7 @@ h2{margin-left:20px;margin-top:30px}
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo2/lesson-359/')">Idle Mining Empire</div>
 <div class="item" onclick="playGame('https://turbowarp.org/131270192/fullscreen')">Diep.io</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-127/')">Super Mario Bros</div>
-<div class="item"><a href="https://drive.google.com/uc?id=1C4G1M6f2VNuS61lYqrv9MGEtnFMtP-TP&export=download" style="color:white;text-decoration:none;">Baseball Bros</a></div>
+<div class="item" onclick="playGame('https://drive.google.com/uc?id=1C4G1M6f2VNuS61lYqrv9MGEtnFMtP-TP&export=download')">Baseball Bros</div>
 <div class="item" onclick="playGame('https://dt9lms.csb.app/')">Endoparasitic</div>
 <div class="item" onclick="playGame('https://csgd73.csb.app/')">Slenderman</div>
 <div class="item" onclick="playGame('https://c85hj5.csb.app/')">Survival Race</div>
@@ -148,98 +150,99 @@ h2{margin-left:20px;margin-top:30px}
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo3/lesson-492/')">Solitare</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-76/')">Fireboy & Watergirl</div>
 <div class="item" onclick="playGame('https://quiz-70.github.io/repo1/lesson-63/')">Duck Life</div>
-<!-- END ALL GAMES -->
-
 </div>
 <button class="arrow arrow-right" onclick="scrollRight('carouselAll')">&#10095;</button>
 </div>
 </div>
 
-<!-- MOVIES, TV SHOWS, MUSIC remain the same as before -->
+<!-- MOVIES SECTION -->
 <div id="moviesSection" style="display:none">
 <h2>All Movies</h2>
 <div class="carousel-wrapper">
-<button class="arrow arrow-left" onclick="scrollLeft('carouselMovies')">&#10094;</button>
 <div class="carousel" id="carouselMovies">
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/756999-the-black-phone','_blank')">The Black Phone</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/137106-the-lego-movie','_blank')">The Lego Movie</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/329-jurassic-park','_blank')">Jurassic Park</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/330-the-lost-world-jurassic-park','_blank')">Jurassic Park The Lost World</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/331-jurassic-park-iii','_blank')">Jurassic Park 3</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/135397-jurassic-world','_blank')">Jurassic World</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/351286-jurassic-world-fallen-kingdom','_blank')">Jurassic World Fallen Kingdom</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/507086-jurassic-world-dominion','_blank')">Jurassic World Dominion</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/1234821-jurassic-world-rebirth','_blank')">Jurassic World Rebirth</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/movies/73723-the-lorax','_blank')">The Lorax</div>
+<div class="item"><a href="https://www.1shows.ru/movies/756999-the-black-phone" target="_blank">The Black Phone</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/137106-the-lego-movie" target="_blank">The Lego Movie</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/329-jurassic-park" target="_blank">Jurassic Park</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/330-the-lost-world-jurassic-park" target="_blank">Jurassic Park: The Lost World</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/331-jurassic-park-iii" target="_blank">Jurassic Park 3</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/135397-jurassic-world" target="_blank">Jurassic World</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/351286-jurassic-world-fallen-kingdom" target="_blank">Jurassic World: Fallen Kingdom</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/507086-jurassic-world-dominion" target="_blank">Jurassic World: Dominion</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/1234821-jurassic-world-rebirth" target="_blank">Jurassic World: Rebirth</a></div>
+<div class="item"><a href="https://www.1shows.ru/movies/73723-the-lorax" target="_blank">The Lorax</a></div>
 </div>
-<button class="arrow arrow-right" onclick="scrollRight('carouselMovies')">&#10095;</button>
 </div>
 </div>
 
+<!-- TV SHOWS SECTION -->
 <div id="tvSection" style="display:none">
 <h2>All TV Shows</h2>
 <div class="carousel-wrapper">
-<button class="arrow arrow-left" onclick="scrollLeft('carouselTV')">&#10094;</button>
 <div class="carousel" id="carouselTV">
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/66732-stranger-things','_blank')">Stranger Things</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/1405-dexter','_blank')">Dexter</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/131927-dexter-new-blood','_blank')">Dexter New Blood</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/259909-dexter-resurrection','_blank')">Dexter Resurrection</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/219937-dexter-original-sin','_blank')">Dexter Original Sin</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/18165-the-vampire-diaries','_blank')">Vampire Diaries</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/200875-it-welcome-to-derry','_blank')">IT Welcome to Derry</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/194766-the-summer-i-turned-pretty','_blank')">The Summer I Turned Pretty</div>
-<div class="item" onclick="window.open('https://www.1shows.ru/tv/93405-squid-game','_blank')">Squid Game</div>
+<div class="item"><a href="https://www.1shows.ru/tv/66732-stranger-things" target="_blank">Stranger Things</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/1405-dexter" target="_blank">Dexter</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/131927-dexter-new-blood" target="_blank">Dexter New Blood</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/259909-dexter-resurrection" target="_blank">Dexter Resurrection</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/219937-dexter-original-sin" target="_blank">Dexter Original Sin</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/18165-the-vampire-diaries" target="_blank">Vampire Diaries</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/200875-it-welcome-to-derry" target="_blank">IT Welcome to Derry</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/194766-the-summer-i-turned-pretty" target="_blank">The Summer I Turned Pretty</a></div>
+<div class="item"><a href="https://www.1shows.ru/tv/93405-squid-game" target="_blank">Squid Game</a></div>
 </div>
-<button class="arrow arrow-right" onclick="scrollRight('carouselTV')">&#10095;</button>
 </div>
 </div>
 
+<!-- MUSIC SECTION -->
 <div id="musicSection" style="display:none">
-<h2>All Music Artists</h2>
+<h2>Music Artists</h2>
 <div class="carousel-wrapper">
-<button class="arrow arrow-left" onclick="scrollLeft('carouselMusic')">&#10094;</button>
 <div class="carousel" id="carouselMusic">
-<div class="item" onclick="window.open('https://sites.google.com/view/applegames-apple/music/pharrell-williams?authuser=0','_blank')">Pharrell Williams</div>
-<div class="item" onclick="window.open('https://sites.google.com/view/applegames-apple/music/leon-thomas?authuser=0','_blank')">Leon Thomas</div>
-<div class="item" onclick="window.open('https://sites.google.com/view/applegames-apple/music/katseye?authuser=0','_blank')">Katseye</div>
+<div class="item"><a href="https://sites.google.com/view/applegames-apple/music/pharrell-williams?authuser=0" target="_blank">Pharrell Williams</a></div>
+<div class="item"><a href="https://sites.google.com/view/applegames-apple/music/leon-thomas?authuser=0" target="_blank">Leon Thomas</a></div>
+<div class="item"><a href="https://sites.google.com/view/applegames-apple/music/katseye?authuser=0" target="_blank">Katseye</a></div>
 </div>
-<button class="arrow arrow-right" onclick="scrollRight('carouselMusic')">&#10095;</button>
+</div>
+</div>
+
+<!-- YOUTUBE SECTION -->
+<div id="youtubeSection" style="display:none">
+<h2>YouTube Channels</h2>
+<div class="carousel-wrapper">
+<div class="carousel" id="carouselYT">
+<div class="item"><a href="https://example.com" target="_blank">Mrbeast</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Jynxzi</a></div>
+<div class="item"><a href="https://example.com" target="_blank">CoryxKenshin</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Joe Bartolozzi</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Ice 711</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Swiss001</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Ludwig</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Sur Ronster</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Aquatic Neptune</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Fern</a></div>
+<div class="item"><a href="https://example.com" target="_blank">SML</a></div>
+<div class="item"><a href="https://example.com" target="_blank">DerekFDB</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Supersnailboy</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Tyler Blanchard</a></div>
+<div class="item"><a href="https://example.com" target="_blank">DougDoug</a></div>
+<div class="item"><a href="https://example.com" target="_blank">Ish</a></div>
+</div>
 </div>
 </div>
 
 </div>
 
 <div id="viewer">
-<iframe src="" id="gameFrame"></iframe>
+<iframe id="gameFrame"></iframe>
 <div id="homeBtn" onclick="closeGame()">Home</div>
 </div>
 
 <script>
-function openSection(id){
-document.getElementById('home').style.display='none';
-document.getElementById('gamesSection').style.display='none';
-document.getElementById('moviesSection').style.display='none';
-document.getElementById('tvSection').style.display='none';
-document.getElementById('musicSection').style.display='none';
-document.getElementById(id).style.display='block';
-window.scrollTo(0,0);
-}
-function playGame(url){
-document.getElementById('viewer').style.display='block';
-document.getElementById('gameFrame').src=url;
-}
-function closeGame(){
-document.getElementById('viewer').style.display='none';
-document.getElementById('gameFrame').src='';
-document.getElementById('home').style.display='block';
-}
-function scrollLeft(carouselId){document.getElementById(carouselId).scrollBy({left:-300,behavior:'smooth'});}
-function scrollRight(carouselId){document.getElementById(carouselId).scrollBy({left:300,behavior:'smooth'});}
-function filterItems(){
-let q=document.getElementById('searchBar').value.toLowerCase();
-document.querySelectorAll('.item').forEach(i=>i.style.display=i.textContent.toLowerCase().includes(q)?'flex':'none');
-}
+function openSection(section){document.getElementById('home').style.display='none';document.getElementById(section).style.display='block';window.scrollTo(0,0);}
+function playGame(url){document.getElementById('viewer').style.display='block';document.getElementById('gameFrame').src=url;document.getElementById('home').style.display='none';}
+function closeGame(){document.getElementById('viewer').style.display='none';document.getElementById('gameFrame').src='';document.getElementById('home').style.display='block';document.getElementById('gamesSection').style.display='block';}
+function scrollLeft(id){document.getElementById(id).scrollBy({left:-300,behavior:'smooth'});}
+function scrollRight(id){document.getElementById(id).scrollBy({left:300,behavior:'smooth'});}
+function filterItems(){let q=document.getElementById('searchBar').value.toLowerCase();document.querySelectorAll('.item').forEach(i=>i.style.display=i.textContent.toLowerCase().includes(q)?'flex':'none');}
 </script>
 </body>
 </html>
