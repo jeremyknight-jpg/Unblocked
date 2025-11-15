@@ -1,151 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unblocked Hub</title>
-  <style>
-    /* === GLOBAL STYLES === */
+<meta charset="UTF-8">
+<title>Unblocked Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #fff;
+        margin: 0;
+        background: #0d0d0d;
+        color: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
     }
 
-    /* === PANIC BUTTON === */
-    #panic-btn {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 10px 15px;
-      background-color: #ff4c4c;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 1000;
-    }
-    #panic-btn:hover {
-      background-color: #ff1a1a;
+    /* Top Bar */
+    #topbar {
+        width: 100%;
+        height: 50px;
+        background: #111;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #222;
     }
 
-    /* === HOME SCREEN === */
-    #home-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 80px;
+    #title {
+        font-size: 22px;
+        font-weight: bold;
     }
 
-    h1 {
-      margin-bottom: 40px;
+    #panic {
+        background: red;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 6px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
     }
 
-    .menu-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
+    /* Home Page Layout */
+    #home {
+        padding: 20px;
     }
 
-    .menu-card {
-      width: 180px;
-      height: 120px;
-      background-color: #1e1e1e;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      cursor: pointer;
-      border-radius: 12px;
-      transition: transform 0.2s, background-color 0.2s;
-      text-align: center;
-      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    .menuGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+        gap: 20px;
+        margin-top: 20px;
     }
 
-    .menu-card:hover {
-      transform: scale(1.05);
-      background-color: #333;
+    .menuItem {
+        background: #1b1b1b;
+        padding: 25px;
+        border-radius: 12px;
+        font-size: 22px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.2s;
     }
 
-    /* === CONTENT SCREEN === */
-    #content-screen {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      background-color: #000;
-      display: none;
+    .menuItem:hover {
+        transform: scale(1.05);
+        background: #272727;
     }
 
-    #content-frame {
-      width: 100%;
-      height: 100%;
-      border: none;
+    /* Game Viewer (Fullscreen iframe) */
+    #viewer {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 50px);
+        background: #000;
+        display: none;
     }
 
-    #home-btn {
-      position: absolute;
-      bottom: 15px;
-      left: 15px;
-      padding: 12px 18px;
-      background-color: #ffffff20;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #fff;
-      backdrop-filter: blur(5px);
+    #viewer iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
     }
-    #home-btn:hover {
-      background-color: #ffffff40;
+
+    #homeBtn {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0,0,0,0.6);
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        border: 1px solid #333;
     }
-  </style>
+
+    /* Netflix Style Section */
+    h2 {
+        margin-left: 20px;
+        margin-top: 30px;
+    }
+
+    .carousel-wrapper {
+        position: relative;
+        margin: 20px;
+    }
+
+    .carousel {
+        display: flex;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .item {
+        min-width: 180px;
+        height: 100px;
+        border-radius: 10px;
+        background: #1e1e1e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: transform .2s;
+    }
+
+    .item:hover {
+        transform: scale(1.08);
+    }
+
+    .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 100px;
+        background: rgba(0,0,0,0.5);
+        border: none;
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+    }
+
+    .arrow:hover {
+        background: rgba(255,255,255,0.15);
+    }
+
+    .arrow-left { left: -5px; }
+    .arrow-right { right: -5px; }
+
+</style>
 </head>
+
 <body>
 
-  <!-- PANIC BUTTON -->
-  <button id="panic-btn" onclick="panic()">Panic</button>
+<!-- Top Bar -->
+<div id="topbar">
+    <div id="title">Unblocked Hub</div>
+    <button id="panic" onclick="window.location.href='https://classroom.google.com'">Panic</button>
+</div>
 
-  <!-- HOME MENU -->
-  <div id="home-screen">
-    <h1>Unblocked Hub</h1>
-    <div class="menu-container">
-      <div class="menu-card" onclick="openContent('https://example.com/game1')">Games</div>
-      <div class="menu-card" onclick="openContent('https://example.com/movies')">Movies</div>
-      <div class="menu-card" onclick="openContent('https://example.com/tvshows')">TV Shows</div>
-      <div class="menu-card" onclick="openContent('https://www.youtube.com')">YouTube</div>
-      <div class="menu-card" onclick="openContent('https://example.com/music')">Music</div>
+<!-- HOME PAGE -->
+<div id="home">
+    <h1>Welcome</h1>
+
+    <div class="menuGrid">
+        <div class="menuItem" onclick="openGames()">Games</div>
+        <div class="menuItem">Movies</div>
+        <div class="menuItem">TV Shows</div>
+        <div class="menuItem">YouTube</div>
+        <div class="menuItem">Music</div>
     </div>
-  </div>
 
-  <!-- EMBEDDED CONTENT SCREEN -->
-  <div id="content-screen">
-    <iframe id="content-frame" src=""></iframe>
-    <button id="home-btn" onclick="goHome()">Home</button>
-  </div>
+    <!-- GAMES SECTION (Hidden until clicked) -->
+    <div id="gamesSection" style="display:none; margin-top:40px;">
 
-  <script>
-    // Open a category in the iframe
-    function openContent(url) {
-      document.getElementById('home-screen').style.display = 'none';
-      document.getElementById('content-frame').src = url;
-      document.getElementById('content-screen').style.display = 'block';
-    }
+        <h2>Top Games</h2>
+        <div class="carousel-wrapper">
+            <button class="arrow arrow-left" onclick="scrollLeft('carousel1')">&#10094;</button>
 
-    // Go back to the menu
-    function goHome() {
-      document.getElementById('content-screen').style.display = 'none';
-      document.getElementById('content-frame').src = '';
-      document.getElementById('home-screen').style.display = 'flex';
-    }
+            <div class="carousel" id="carousel1">
+                <div class="item" onclick="play('https://objectstorage.us-ashburn-1.oraclecloud.com/n/idzgyfi7awwr/b/bucket-20231001-1518-rb1.0/o/index.html')">
+                    Retro Bowl
+                </div>
+                <div class="item">Game 2</div>
+                <div class="item">Game 3</div>
+                <div class="item">Game 4</div>
+            </div>
 
-    // Panic button goes to Google Classroom
-    function panic() {
-      window.location.href = 'https://classroom.google.com';
-    }
-  </script>
+            <button class="arrow arrow-right" onclick="scrollRight('carousel1')">&#10095;</button>
+        </div>
+
+        <h2>All Games</h2>
+        <div class="carousel-wrapper">
+            <button class="arrow arrow-left" onclick="scrollLeft('carousel2')">&#10094;</button>
+
+            <div class="carousel" id="carousel2">
+                <div class="item">Game A</div>
+                <div class="item">Game B</div>
+                <div class="item">Game C</div>
+                <div class="item">Game D</div>
+                <div class="item">Game E</div>
+            </div>
+
+            <button class="arrow arrow-right" onclick="scrollRight('carousel2')">&#10095;</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- FULLSCREEN GAME VIEWER -->
+<div id="viewer">
+    <iframe id="gameframe"></iframe>
+    <div id="homeBtn" onclick="closeGame()">Home</div>
+</div>
+
+<script>
+function openGames() {
+    document.getElementById("gamesSection").style.display = "block";
+}
+
+function scrollLeft(id) {
+    document.getElementById(id).scrollBy({ left: -300, behavior: "smooth" });
+}
+
+function scrollRight(id) {
+    document.getElementById(id).scrollBy({ left: 300, behavior: "smooth" });
+}
+
+function play(url) {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("viewer").style.display = "block";
+    document.getElementById("gameframe").src = url;
+}
+
+function closeGame() {
+    document.getElementById("viewer").style.display = "none";
+    document.getElementById("home").style.display = "block";
+    document.getElementById("gameframe").src = "";
+}
+</script>
 
 </body>
 </html>
