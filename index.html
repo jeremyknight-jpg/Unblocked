@@ -23,8 +23,8 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 20px;
-        box-sizing: border-box;
         border-bottom: 1px solid #222;
+        box-sizing: border-box;
     }
 
     #title {
@@ -42,9 +42,11 @@
         cursor: pointer;
     }
 
-    /* Home Page Layout */
+    /* Home Layout */
     #home {
         padding: 20px;
+        overflow-y: auto;
+        height: calc(100% - 50px);
     }
 
     .menuGrid {
@@ -69,7 +71,19 @@
         background: #272727;
     }
 
-    /* Game Viewer (Fullscreen iframe) */
+    /* Search Bar */
+    #searchBar {
+        padding:10px;
+        width:60%;
+        max-width:400px;
+        border-radius:8px;
+        border:none;
+        font-size:16px;
+        display:block;
+        margin: 20px auto;
+    }
+
+    /* Game Viewer */
     #viewer {
         position: absolute;
         top: 50px;
@@ -98,12 +112,13 @@
         border: 1px solid #333;
     }
 
-    /* Netflix Style Section */
+    /* Section Title */
     h2 {
         margin-left: 20px;
         margin-top: 30px;
     }
 
+    /* Netflix-style carousel */
     .carousel-wrapper {
         position: relative;
         margin: 20px;
@@ -126,9 +141,11 @@
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 18px;
+        font-size: 16px;
+        text-align: center;
         cursor: pointer;
         transition: transform .2s;
+        padding: 10px;
     }
 
     .item:hover {
@@ -160,6 +177,12 @@
     .arrow-left { left: -5px; }
     .arrow-right { right: -5px; }
 
+    .note {
+        font-size: 12px;
+        opacity: 0.7;
+        margin-top: 5px;
+    }
+
 </style>
 </head>
 
@@ -183,20 +206,39 @@
         <div class="menuItem">Music</div>
     </div>
 
-    <!-- GAMES SECTION (Hidden until clicked) -->
-    <div id="gamesSection" style="display:none; margin-top:40px;">
+    <!-- Search Bar -->
+    <input type="text" id="searchBar" placeholder="Search games...">
+
+    <!-- GAMES SECTION -->
+    <div id="gamesSection" style="display:none; margin-top:20px;">
 
         <h2>Top Games</h2>
         <div class="carousel-wrapper">
             <button class="arrow arrow-left" onclick="scrollLeft('carousel1')">&#10094;</button>
 
             <div class="carousel" id="carousel1">
+
                 <div class="item" onclick="play('https://objectstorage.us-ashburn-1.oraclecloud.com/n/idzgyfi7awwr/b/bucket-20231001-1518-rb1.0/o/index.html')">
                     Retro Bowl
                 </div>
-                <div class="item">Game 2</div>
-                <div class="item">Game 3</div>
-                <div class="item">Game 4</div>
+
+                <div class="item" onclick="play('https://quiz-70.github.io/repo3/lesson-540/')">
+                    College Retro Bowl
+                </div>
+
+                <div class="item" onclick="play('https://quiz-70.github.io/repo1/lesson-61/')">
+                    Drive Mad
+                </div>
+
+                <div class="item" onclick="play('https://quiz-70.github.io/repo2/lesson-244/')">
+                    1v1.LOL
+                </div>
+
+                <div class="item" onclick="play('https://startmyeducation.top/signin.html')">
+                    Water  
+                    <div class="note">password is funni</div>
+                </div>
+
             </div>
 
             <button class="arrow arrow-right" onclick="scrollRight('carousel1')">&#10095;</button>
@@ -207,11 +249,11 @@
             <button class="arrow arrow-left" onclick="scrollLeft('carousel2')">&#10094;</button>
 
             <div class="carousel" id="carousel2">
-                <div class="item">Game A</div>
-                <div class="item">Game B</div>
-                <div class="item">Game C</div>
-                <div class="item">Game D</div>
-                <div class="item">Game E</div>
+                <div class="item" onclick="play('https://objectstorage.us-ashburn-1.oraclecloud.com/n/idzgyfi7awwr/b/bucket-20231001-1518-rb1.0/o/index.html')">Retro Bowl</div>
+                <div class="item" onclick="play('https://quiz-70.github.io/repo3/lesson-540/')">College Retro Bowl</div>
+                <div class="item" onclick="play('https://quiz-70.github.io/repo1/lesson-61/')">Drive Mad</div>
+                <div class="item" onclick="play('https://quiz-70.github.io/repo2/lesson-244/')">1v1.LOL</div>
+                <div class="item" onclick="play('https://startmyeducation.top/signin.html')">Water</div>
             </div>
 
             <button class="arrow arrow-right" onclick="scrollRight('carousel2')">&#10095;</button>
@@ -250,6 +292,20 @@ function closeGame() {
     document.getElementById("home").style.display = "block";
     document.getElementById("gameframe").src = "";
 }
+
+// Live Search Bar
+document.getElementById('searchBar').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    const allItems = document.querySelectorAll('#carousel1 .item, #carousel2 .item');
+    allItems.forEach(item => {
+        const name = item.innerText.toLowerCase();
+        if (name.includes(query)) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+});
 </script>
 
 </body>
