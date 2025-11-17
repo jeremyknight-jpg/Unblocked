@@ -1,264 +1,248 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cloaked LaunchPad / Unblocked Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-/* ===== Global ===== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  <!-- Tab name -->
+  <title>My Apps</title>
 
-body {
-  font-family: Arial, sans-serif;
-  background: #000;
-  color: #fff;
-  overflow: hidden;
-}
+  <!-- Tab icon (favicon) — make sure the cloud image in your repo is named this) -->
+  <link rel="icon" type="image/png" href="myapps-icon.png">
 
-/* ===== LOCK SCREEN (YOUR SCREENSHOT) ===== */
+  <style>
+    /* ===== Global ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-#lockScreen {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+    }
 
-#lockImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* fills the screen, looks exactly like screenshot */
-  display: block;
-}
+    /* ===== LOCK SCREEN (Screenshot) ===== */
+    #lockScreen {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-/* Invisible clickable area over Progress Learning tile
-   Adjust top/left/width/height if needed so it sits on top of the app */
+    #lockImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-#progressHitbox {
-  position: absolute;
-  /* ✏️ Tweak these if the clickable area is slightly off */
-  top: 52%;   /* % from top of screenshot */
-  left: 55%;  /* % from left of screenshot */
-  width: 10%; /* size of the hitbox */
-  height: 15%;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
+    /* Invisible hotspot on Progress Learning app */
+    #progressHitbox {
+      position: absolute;
+      top: 52%;
+      left: 55%;
+      width: 10%;
+      height: 15%;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
 
-/* No focus outline (so it still looks exactly like the screenshot) */
-#progressHitbox:focus {
-  outline: none;
-}
+    #progressHitbox:focus {
+      outline: none;
+    }
 
-/* ===== REAL SITE (HIDDEN INITIALLY) ===== */
+    /* ===== REAL SITE AREA ===== */
+    #realSite {
+      display: none;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      margin: 0;
+      transition: background 0.3s, color 0.3s;
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
 
-#realSite {
-  display: none;                /* only show after correct password */
-  font-family: Arial, sans-serif;
-  background-color: #121212;
-  color: #fff;
-  margin: 0;
-  transition: background 0.3s, color 0.3s;
-  overflow-x: hidden;
-  min-height: 100vh;
-  padding-bottom: 40px;
-}
+    #realSite header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #1e1e1e;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-/* Now style everything inside your Unblocked Hub */
+    #realSite header nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
 
-#realSite header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background: #1e1e1e;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+    #realSite header nav a:hover {
+      text-decoration: underline;
+    }
 
-#realSite header nav a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 10px;
-}
+    #realSite button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #333;
+      color: #fff;
+    }
 
-#realSite header nav a:hover {
-  text-decoration: underline;
-}
+    #realSite button:hover {
+      background: #555;
+    }
 
-#realSite button {
-  padding: 10px 20px;
-  margin-left: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #333;
-  color: #fff;
-}
+    #realSite.dark-mode {
+      background: #121212;
+      color: #fff;
+    }
 
-#realSite button:hover {
-  background: #555;
-}
+    #realSite #home {
+      text-align: center;
+      padding: 100px 20px;
+    }
 
-#realSite.dark-mode {
-  background: #121212;
-  color: #fff;
-}
+    #realSite #home h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
 
-#realSite #home {
-  text-align: center;
-  padding: 100px 20px;
-}
+    #realSite #home h3 {
+      font-size: 1.5em;
+      color: #ccc;
+    }
 
-#realSite #home h1 {
-  font-size: 3em;
-  margin-bottom: 20px;
-}
+    #realSite #homeBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1000;
+      background-color: #1e1e1e;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
 
-#realSite #home h3 {
-  font-size: 1.5em;
-  color: #ccc;
-}
+    #realSite .search-bar {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+    }
 
-#realSite #homeBtn {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 1000;
-  background-color: #1e1e1e;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 15px;
-  cursor: pointer;
-}
+    #realSite .search-bar input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
 
-#realSite .search-bar {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
-}
+    #realSite .section {
+      padding: 30px 20px;
+      border-bottom: 1px solid #333;
+    }
 
-#realSite .search-bar input {
-  width: 80%;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-}
+    #realSite .carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 10px 0;
+    }
 
-#realSite .section {
-  padding: 30px 20px;
-  border-bottom: 1px solid #333;
-}
+    #realSite .carousel::-webkit-scrollbar {
+      height: 10px;
+    }
 
-#realSite .carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  padding: 10px 0;
-}
+    #realSite .carousel::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 5px;
+    }
 
-#realSite .carousel::-webkit-scrollbar {
-  height: 10px;
-}
+    #realSite .carousel-item {
+      min-width: 200px;
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      flex-shrink: 0;
+    }
 
-#realSite .carousel::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 5px;
-}
+    #realSite .carousel-item:hover {
+      background: #333;
+    }
 
-#realSite .carousel-item {
-  min-width: 200px;
-  background: #1e1e1e;
-  border-radius: 10px;
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  flex-shrink: 0;
-}
+    #realSite iframe.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2000;
+      border: none;
+    }
 
-#realSite .carousel-item:hover {
-  background: #333;
-}
+    #realSite .emulator {
+      border: 2px dashed #fff;
+      padding: 50px;
+      text-align: center;
+      border-radius: 15px;
+      max-width: 90%;
+      margin: 0 auto;
+    }
 
-#realSite iframe.fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 2000;
-  border: none;
-}
+    #realSite .emulator.dragover {
+      background-color: rgba(255,255,255,0.1);
+    }
 
-#realSite .emulator {
-  border: 2px dashed #fff;
-  padding: 50px;
-  text-align: center;
-  border-radius: 15px;
-  max-width: 90%;
-  margin: 0 auto;
-}
+    #realSite input[type="file"] {
+      display: none;
+    }
 
-#realSite .emulator.dragover {
-  background-color: rgba(255,255,255,0.1);
-}
+    #realSite label {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #1e1e1e;
+      border: 1px solid #fff;
+      border-radius: 10px;
+      cursor: pointer;
+    }
 
-#realSite input[type="file"] {
-  display: none;
-}
+    #realSite .file-info {
+      margin-top: 20px;
+      word-break: break-word;
+    }
 
-#realSite label {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #1e1e1e;
-  border: 1px solid #fff;
-  border-radius: 10px;
-  cursor: pointer;
-}
+    #realSite .site-logo {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 55px;
+      height: 55px;
+      z-index: 9999;
+    }
 
-#realSite .file-info {
-  margin-top: 20px;
-  word-break: break-word;
-}
-
-#realSite .site-logo {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  width: 55px;
-  height: 55px;
-  z-index: 9999;
-}
-
-#realSite .site-logo svg {
-  width: 100%;
-  height: 100%;
-}
-</style>
+    #realSite .site-logo svg {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
-<body>
-
-<!-- =============== LOCKED SCREEN WITH YOUR SCREENSHOT =============== -->
-<div id="lockScreen">
-  <!-- 🔴 Change src if your screenshot has a different file name -->
-  <img id="lockImage" src="launchpad.png" alt="LaunchPad screenshot" />
-
-  <!-- Invisible click area over Progress Learning -->
-  <button id="progressHitbox" onclick="unlockSite()" aria-label="Progress Learning"></button>
-</div>
-
 <!-- =============== REAL UNBLOCKED HUB SITE (HIDDEN) =============== -->
 <div id="realSite">
 
