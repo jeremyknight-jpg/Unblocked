@@ -496,25 +496,6 @@ body {
 <script>
 function unlockSite() {
   var pwd = prompt("Enter password:");
-
-  if (pwd === null) return;
-
-  if (pwd === "ihatehw385") {
-    // hide screenshot
-    document.getElementById("lockScreen").style.display = "none";
-    // show real site
-    var rs = document.getElementById("realSite");
-    rs.style.display = "block";
-    document.body.style.overflow = "auto";
-    window.scrollTo(0, 0);
-  } else {
-    alert("Incorrect password.");
-  }
-}
-
-<script>
-function unlockSite() {
-  var pwd = prompt("Enter password:");
   if (pwd === null) return;
 
   if (pwd === "ihatehw385") {
@@ -568,7 +549,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Fixed Search Bar
+  // Search Bar Filter
   var searchInput = document.getElementById("searchInput");
   searchInput.addEventListener("input", function () {
     let query = searchInput.value.toLowerCase();
@@ -580,7 +561,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 // ========================
 //  GAME FULLSCREEN FIX
 // ========================
@@ -590,13 +570,11 @@ let currentIframe = null;
 function openGame(url) {
   if (currentIframe) return;
 
-  // Create fullscreen iframe
   const iframe = document.createElement("iframe");
   iframe.src = url;
   iframe.className = "fullscreen";
   iframe.allowFullscreen = true;
 
-  // Create exit button
   const exitBtn = document.createElement("button");
   exitBtn.textContent = "✖";
   exitBtn.style.position = "fixed";
@@ -610,11 +588,9 @@ function openGame(url) {
   exitBtn.style.background = "rgba(0,0,0,0.6)";
   exitBtn.style.color = "white";
   exitBtn.style.cursor = "pointer";
-
   exitBtn.onclick = closeGame;
 
   document.body.style.overflow = "hidden";
-
   document.body.appendChild(iframe);
   document.body.appendChild(exitBtn);
 
@@ -627,13 +603,10 @@ function closeGame() {
 
   document.body.removeChild(currentIframe);
   document.body.removeChild(currentIframe.exitBtn);
-
   document.body.style.overflow = "auto";
-
   currentIframe = null;
 }
 
-// ESC key closes game
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeGame();
 });
