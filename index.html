@@ -260,7 +260,7 @@ body {
 </div>
 
 <!-- =============== REAL UNBLOCKED HUB SITE (HIDDEN) =============== -->
-<div id="Unblocked Hub">
+<div id="realSite">
 
   <!-- Home Section -->
   <div class="section" id="home">
@@ -512,72 +512,133 @@ function unlockSite() {
   }
 }
 
-// Setup Unblocked Hub functionality
+ <script>
+function unlockSite() {
+  var pwd = prompt("Enter password:");
+  if (pwd === null) return;
+
+  if (pwd === "ihatehw385") {
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("realSite").style.display = "block";
+    document.body.style.overflow = "auto";
+    window.scrollTo(0, 0);
+  } else {
+    alert("Incorrect password.");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-  // Dark Mode
+
+  // Dark Mode Toggle
   var darkBtn = document.getElementById("darkModeBtn");
   if (darkBtn) {
     darkBtn.addEventListener("click", function () {
-      var rs = document.getElementById("realSite");
-      rs.classList.toggle("dark-mode");
+      document.getElementById("realSite").classList.toggle("dark-mode");
     });
   }
 
-  // Emulator
+  // ROM Emulator File Handler
   var emulator = document.getElementById("emulatorDiv");
   var fileInput = document.getElementById("fileInput");
   var fileInfo = document.getElementById("fileInfo");
 
-  if (emulator && fileInput && fileInfo) {
-    emulator.addEventListener("dragover", function (e) {
+  if (emulator && fileInput) {
+    emulator.addEventListener("dragover", e => {
       e.preventDefault();
       emulator.classList.add("dragover");
     });
 
-    emulator.addEventListener("dragleave", function () {
+    emulator.addEventListener("dragleave", () => {
       emulator.classList.remove("dragover");
     });
 
-    emulator.addEventListener("drop", function (e) {
+    emulator.addEventListener("drop", e => {
       e.preventDefault();
       emulator.classList.remove("dragover");
       handleFile(e.dataTransfer.files[0]);
     });
 
-    fileInput.addEventListener("change", function () {
+    fileInput.addEventListener("change", () => {
       handleFile(fileInput.files[0]);
     });
 
     function handleFile(file) {
       if (!file) return;
-      fileInfo.textContent = "File selected: " + file.name + " (" + file.size + " bytes)";
+      fileInfo.textContent = `File selected: ${file.name} (${file.size} bytes)`;
     }
   }
 
-  // Search filter
+  // Fixed Search Bar
   var searchInput = document.getElementById("searchInput");
-  if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      var query = searchInput.value.toLowerCase();
-      document.querySelectorAll("#realSite .carousel-item a, #realSite .carousel-item").forEach(function (item) {
-        var text = (item.textContent || "").toLowerCase();
-        item.style.display = text.includes(query) ? "block" : "none";
-      });
+  searchInput.addEventListener("input", function () {
+    let query = searchInput.value.toLowerCase();
+
+    document.querySelectorAll(".carousel-item").forEach(item => {
+      let text = item.textContent.toLowerCase();
+      item.style.display = text.includes(query) ? "" : "none";
     });
-  }
+  });
 });
 
-// Open game fullscreen
+
+// ========================
+//  GAME FULLSCREEN FIX
+// ========================
+
+let currentIframe = null;
+
 function openGame(url) {
-  var iframe = document.createElement("iframe");
+  if (currentIframe) return;
+
+  // Create fullscreen iframe
+  const iframe = document.createElement("iframe");
   iframe.src = url;
   iframe.className = "fullscreen";
   iframe.allowFullscreen = true;
+
+  // Create exit button
+  const exitBtn = document.createElement("button");
+  exitBtn.textContent = "✖";
+  exitBtn.style.position = "fixed";
+  exitBtn.style.top = "20px";
+  exitBtn.style.right = "20px";
+  exitBtn.style.zIndex = "3000";
+  exitBtn.style.fontSize = "30px";
+  exitBtn.style.padding = "5px 12px";
+  exitBtn.style.border = "none";
+  exitBtn.style.borderRadius = "8px";
+  exitBtn.style.background = "rgba(0,0,0,0.6)";
+  exitBtn.style.color = "white";
+  exitBtn.style.cursor = "pointer";
+
+  exitBtn.onclick = closeGame;
+
+  // Lock scrolling
+  document.body.style.overflow = "hidden";
+
+  // Add elements
   document.body.appendChild(iframe);
-  iframe.addEventListener("click", function () {
-    document.body.removeChild(iframe);
-  });
+  document.body.appendChild(exitBtn);
+
+  currentIframe = iframe;
+  currentIframe.exitBtn = exitBtn;
 }
-</script>
+
+function closeGame() {
+  if (!currentIframe) return;
+
+  document.body.removeChild(currentIframe);
+  document.body.removeChild(currentIframe.exitBtn);
+
+  document.body.style.overflow = "auto";
+
+  currentIframe = null;
+}
+
+// Close fullscreen on ESC key
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeGame();
+});
+</script> 
 </body>
 </html>
