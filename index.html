@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LaunchPad</title>
+<title>Cloaked LaunchPad / Unblocked Hub</title>
 
 <style>
-/* ===================== LAUNCHPAD / CLOAK STYLES ===================== */
+/* ===== Global ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,199 +14,53 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f3f3f3;
-  color: #333;
-}
-
-/* Top bar */
-.topbar {
+  font-family: Arial, sans-serif;
   background: #000;
   color: #fff;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
+  overflow: hidden;
 }
 
-.topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* ===== LOCK SCREEN (YOUR SCREENSHOT) ===== */
 
-.topbar-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #000;
-  font-size: 16px;
-}
-
-.topbar-title {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.topbar-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.search-box {
-  background: #fff;
-  border-radius: 20px;
-  width: 380px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-}
-
-.search-icon {
-  font-size: 14px;
-  margin-right: 4px;
-  opacity: 0.7;
-}
-
-.search-placeholder {
-  font-size: 13px;
-  color: #777;
-  text-align: left;
-  width: 100%;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-}
-
-.topbar-circle {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #444;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-}
-
-/* Main fake LaunchPad screen */
 #lockScreen {
-  min-height: calc(100vh - 52px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 80px;
-  background: #f3f3f3;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.apps-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 180px);
-  grid-auto-rows: 170px;
-  gap: 24px;
+#lockImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills the screen, looks exactly like screenshot */
+  display: block;
 }
 
-.app-tile {
-  background: #f5f5f5;
-  border-radius: 20px;
-  width: 180px;
-  height: 170px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: default;
-}
+/* Invisible clickable area over Progress Learning tile
+   Adjust top/left/width/height if needed so it sits on top of the app */
 
-.app-icon {
-  width: 88px;
-  height: 88px;
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 22px;
-}
-
-.app-label {
-  margin-top: 10px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-/* Progress Learning clickable */
-.app-tile.progress-click {
+#progressHitbox {
+  position: absolute;
+  /* ✏️ Tweak these if the clickable area is slightly off */
+  top: 52%;   /* % from top of screenshot */
+  left: 55%;  /* % from left of screenshot */
+  width: 10%; /* size of the hitbox */
+  height: 15%;
+  background: transparent;
+  border: none;
   cursor: pointer;
+  padding: 0;
 }
 
-.app-tile.progress-click:hover {
-  transform: scale(1.04);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+/* No focus outline (so it still looks exactly like the screenshot) */
+#progressHitbox:focus {
+  outline: none;
 }
 
-/* Bottom dock + tree */
-.dock {
-  position: fixed;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 60px;
-  padding: 8px 18px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 22px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.dock-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.corner-tree {
-  position: fixed;
-  left: 12px;
-  bottom: 10px;
-  width: 60px;
-  height: 40px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #2b8a3e 55%, #5b3b16 55%);
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-}
-
-/* ===================== REAL SITE (HIDDEN INITIALLY) ===================== */
+/* ===== REAL SITE (HIDDEN INITIALLY) ===== */
 
 #realSite {
-  display: none; /* only shown after password */
-}
-
-/* Scope your Unblocked Hub styles to #realSite so they
-   don't mess with the fake LaunchPad look */
-
-#realSite {
+  display: none;                /* only show after correct password */
   font-family: Arial, sans-serif;
   background-color: #121212;
   color: #fff;
@@ -214,9 +68,11 @@ body {
   transition: background 0.3s, color 0.3s;
   overflow-x: hidden;
   min-height: 100vh;
+  padding-bottom: 40px;
 }
 
-/* header, nav, etc inside real site */
+/* Now style everything inside your Unblocked Hub */
+
 #realSite header {
   display: flex;
   flex-wrap: wrap;
@@ -355,7 +211,7 @@ body {
 }
 
 #realSite .emulator.dragover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255,255,255,0.1);
 }
 
 #realSite input[type="file"] {
@@ -377,7 +233,6 @@ body {
   word-break: break-word;
 }
 
-/* site logo */
 #realSite .site-logo {
   position: fixed;
   top: 10px;
@@ -395,83 +250,18 @@ body {
 </head>
 <body>
 
-<!-- ===================== FAKE LAUNCHPAD FRONT PAGE ===================== -->
-
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="topbar-logo">LC</div>
-    <div class="topbar-title">LaunchPad</div>
-  </div>
-  <div class="topbar-center">
-    <div class="search-box">
-      <div class="search-icon">🔍</div>
-      <div class="search-placeholder">Search</div>
-    </div>
-  </div>
-  <div class="topbar-right">
-    <div class="topbar-circle">⬤</div>
-    <div class="topbar-circle">👤</div>
-  </div>
-</div>
-
+<!-- =============== LOCKED SCREEN WITH YOUR SCREENSHOT =============== -->
 <div id="lockScreen">
-  <div class="apps-grid">
-    <div class="app-tile">
-      <div class="app-icon">A</div>
-      <div class="app-label">Accelerate Learning</div>
-    </div>
-    <div class="app-tile">
-      <div class="app-icon">D</div>
-      <div class="app-label">Destiny LTI</div>
-    </div>
-    <div class="app-tile">
-      <div class="app-icon">SI</div>
-      <div class="app-label">Edmentum - Study Island</div>
-    </div>
-    <div class="app-tile">
-      <div class="app-icon">GC</div>
-      <div class="app-label">Google Classroom</div>
-    </div>
-    <div class="app-tile">
-      <div class="app-icon">H</div>
-      <div class="app-label">HMH</div>
-    </div>
-    <div class="app-tile">
-      <div class="app-icon">IR</div>
-      <div class="app-label">i-Ready</div>
-    </div>
-    <div class="app-tile">
-      <div class="app-icon">IXL</div>
-      <div class="app-label">IXL</div>
-    </div>
+  <!-- 🔴 Change src if your screenshot has a different file name -->
+  <img id="lockImage" src="launchpad.png" alt="LaunchPad screenshot" />
 
-    <!-- CLICKABLE Progress Learning -->
-    <div class="app-tile progress-click" onclick="unlockSite()">
-      <div class="app-icon">PL</div>
-      <div class="app-label">Progress Learning</div>
-    </div>
-
-    <div class="app-tile">
-      <div class="app-icon">SM</div>
-      <div class="app-label">Safari Montage</div>
-    </div>
-    <div class="app-tile">
-      <div class="app-icon">SE</div>
-      <div class="app-label">Savvas EasyBridge</div>
-    </div>
-  </div>
+  <!-- Invisible click area over Progress Learning -->
+  <button id="progressHitbox" onclick="unlockSite()" aria-label="Progress Learning"></button>
 </div>
 
-<div class="dock">
-  <div class="dock-icon">🎒</div>
-  <div class="dock-icon">📁</div>
-  <div class="dock-icon">🖼️</div>
-</div>
-
-<div class="corner-tree"></div>
-
-<!-- ===================== YOUR REAL UNBLOCKED HUB SITE ===================== -->
+<!-- =============== REAL UNBLOCKED HUB SITE (HIDDEN) =============== -->
 <div id="realSite">
+
   <!-- Home Section -->
   <div class="section" id="home">
     <h1>Unblocked Hub</h1>
@@ -505,234 +295,82 @@ body {
   <div class="section" id="games">
     <h2>Games</h2>
     <div class="carousel" id="gamesCarousel">
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=6')">
-        Block Blast
-      </div>
-      <div class="carousel-item" onclick="openGame('https://7vfx6j.csb.app/')">
-        They are Coming
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=468')">
-        Hollow Knight
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=430')">
-        10 Minutes Till Dawn
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=58')">
-        1v1.LOL
-      </div>
-      <div class="carousel-item" onclick="openGame('https://menkoi.github.io/Backrooms')">
-        The Backrooms
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=467')">
-        Baldi's Basics
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=272')">
-        Basketball Stars
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=66')">
-        Basket Random
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=70')">
-        Bitlife
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=33')">
-        Retro Bowl
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=34')">
-        College Retro Bowl
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=166')">
-        Bad Parenting
-      </div>
-      <div class="carousel-item" onclick="openGame('https://crvhg3.csb.app/')">
-        Bendy &amp; the Ink Machine
-      </div>
-      <div class="carousel-item" onclick="openGame('https://mnvm2f.csb.app/')">
-        Buckshot Roulette
-      </div>
-      <div class="carousel-item" onclick="openGame('https://klxly6.csb.app/')">
-        Cuphead
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=262')">
-        Half Life
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=203')">
-        Doom
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=602')">
-        Doom 2
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=38')">
-        FNAF 1
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=39')">
-        FNAF 2
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=40')">
-        FNAF 3
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=41')">
-        FNAF 4
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=185')">
-        Sister Location FNAF 5
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=191')">
-        Freddy Fazbear's Pizzeria Simulator FNAF 6
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=192')">
-        Ultimate Custom Night FNAF 7
-      </div>
-      <div class="carousel-item" onclick="openGame('https://g2t3hl.csb.app/')">
-        ARC
-      </div>
-      <div class="carousel-item" onclick="openGame('https://82zd6l.csb.app/')">
-        R.E.P.O.
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=457')">
-        Raft
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=591')">
-        Slime Rancher
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=461')">
-        Slither.io
-      </div>
-      <div class="carousel-item" onclick="openGame('https://r27bbc.csb.app/')">
-        Slope
-      </div>
-      <div class="carousel-item" onclick="openGame('https://ly4fsf.csb.app/')">
-        Subway Surfers
-      </div>
-      <div class="carousel-item" onclick="openGame('https://c85hj5.csb.app/')">
-        Survival Race
-      </div>
-      <div class="carousel-item" onclick="openGame('https://ddktmt.csb.app/')">
-        SUPERHOT
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=196')">
-        ULTRAKILL
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=109')">
-        Tomb of the Mask
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=108')">
-        Tiny Fishing
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=445')">
-        Kindergarten
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=446')">
-        Kindergarten 2
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=501')">
-        Kindergarten 3
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=456')">
-        Undertale
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=439')">
-        Bank Robbery 2
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=24')">
-        Crossy Road
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=83')">
-        Core Ball
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=77')">
-        Boxing Random
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=470')">
-        Doodle Jump
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=35')">
-        Drive Mad
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=276')">
-        Drift Boss
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=88')">
-        Fireboy &amp; Watergirl
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=129')">
-        Flappy Bird
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=30')">
-        Bottle Flip
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=261')">
-        Fruit Ninja
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=364')">
-        Idle Mining Empire
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=7')">
-        Jetpack Joyride
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=93')">
-        Johnny Trigger
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=342')">
-        Learn to Fly
-      </div>
-      <div class="carousel-item" onclick="openGame('https://wk7lnm.csb.app/')">
-        OvO
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=2')">
-        OvO 2
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=505')">
-        PokeMon
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=173')">
-        Drift Hunters
-      </div>
-      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=153')">
-        Flappy Dunk
-      </div>
-      <div class="carousel-item" onclick="openGame('https://d5xq8d.csb.app/')">
-        Escape Road
-      </div>
-      <div class="carousel-item" onclick="openGame('https://dt9lms.csb.app/')">
-        Endoparasitic
-      </div>
-      <div class="carousel-item" onclick="openGame('https://csgd73.csb.app/')">
-        Slenderman
-      </div>
-      <div class="carousel-item" onclick="openGame('https://z2mjd9.csb.app/')">
-        Deltarune
-      </div>
-      <div class="carousel-item" onclick="openGame('https://c8t3fk.csb.app/')">
-        Poly Track
-      </div>
-      <div class="carousel-item" onclick="openGame('https://l5483t.csb.app/')">
-        Infinite Craft
-      </div>
-      <div class="carousel-item" onclick="openGame('https://kclvhw.csb.app/')">
-        Escape Road
-      </div>
-      <div class="carousel-item" onclick="openGame('https://67nswf.csb.app/')">
-        Balatro
-      </div>
-      <div class="carousel-item" onclick="openGame('https://v9t57z.csb.app/')">
-        Chicken War
-      </div>
-      <div class="carousel-item" onclick="openGame('https://ytswf6.csb.app/')">
-        That's Not my Neighbor
-      </div>
-      <div class="carousel-item" onclick="openGame('https://swqvsd.csb.app/')">
-        Webfishing
-      </div>
-      <div class="carousel-item" onclick="openGame('https://turbowarp.org/1947439/embed')">
-        Peggle
-      </div>
-      <div class="carousel-item" onclick="openGame('https://turbowarp.org/590926828/embed')">
-        Terraria
-      </div>
-      <div class="carousel-item" onclick="openGame('https://turbowarp.org/131270192/embed')">
-        Diep.io
-      </div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=6')">Block Blast</div>
+      <div class="carousel-item" onclick="openGame('https://7vfx6j.csb.app/')">They are Coming</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=468')">Hollow Knight</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=430')">10 Minutes Till Dawn</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=58')">1v1.LOL</div>
+      <div class="carousel-item" onclick="openGame('https://menkoi.github.io/Backrooms')">The Backrooms</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=467')">Baldi's Basics</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=272')">Basketball Stars</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=66')">Basket Random</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=70')">Bitlife</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=33')">Retro Bowl</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=34')">College Retro Bowl</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=166')">Bad Parenting</div>
+      <div class="carousel-item" onclick="openGame('https://crvhg3.csb.app/')">Bendy &amp; the Ink Machine</div>
+      <div class="carousel-item" onclick="openGame('https://mnvm2f.csb.app/')">Buckshot Roulette</div>
+      <div class="carousel-item" onclick="openGame('https://klxly6.csb.app/')">Cuphead</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=262')">Half Life</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=203')">Doom</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=602')">Doom 2</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=38')">FNAF 1</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=39')">FNAF 2</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=40')">FNAF 3</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=41')">FNAF 4</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=185')">Sister Location FNAF 5</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=191')">Freddy Fazbear's Pizzeria Simulator FNAF 6</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=192')">Ultimate Custom Night FNAF 7</div>
+      <div class="carousel-item" onclick="openGame('https://g2t3hl.csb.app/')">ARC</div>
+      <div class="carousel-item" onclick="openGame('https://82zd6l.csb.app/')">R.E.P.O.</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=457')">Raft</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=591')">Slime Rancher</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=461')">Slither.io</div>
+      <div class="carousel-item" onclick="openGame('https://r27bbc.csb.app/')">Slope</div>
+      <div class="carousel-item" onclick="openGame('https://ly4fsf.csb.app/')">Subway Surfers</div>
+      <div class="carousel-item" onclick="openGame('https://c85hj5.csb.app/')">Survival Race</div>
+      <div class="carousel-item" onclick="openGame('https://ddktmt.csb.app/')">SUPERHOT</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=196')">ULTRAKILL</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=109')">Tomb of the Mask</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=108')">Tiny Fishing</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=445')">Kindergarten</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=446')">Kindergarten 2</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=501')">Kindergarten 3</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=456')">Undertale</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=439')">Bank Robbery 2</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=24')">Crossy Road</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=83')">Core Ball</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=77')">Boxing Random</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=470')">Doodle Jump</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=35')">Drive Mad</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=276')">Drift Boss</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=88')">Fireboy &amp; Watergirl</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=129')">Flappy Bird</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=30')">Bottle Flip</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=261')">Fruit Ninja</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=364')">Idle Mining Empire</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=7')">Jetpack Joyride</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=93')">Johnny Trigger</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=342')">Learn to Fly</div>
+      <div class="carousel-item" onclick="openGame('https://wk7lnm.csb.app/')">OvO</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=2')">OvO 2</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=505')">PokeMon</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=173')">Drift Hunters</div>
+      <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=153')">Flappy Dunk</div>
+      <div class="carousel-item" onclick="openGame('https://d5xq8d.csb.app/')">Escape Road</div>
+      <div class="carousel-item" onclick="openGame('https://dt9lms.csb.app/')">Endoparasitic</div>
+      <div class="carousel-item" onclick="openGame('https://csgd73.csb.app/')">Slenderman</div>
+      <div class="carousel-item" onclick="openGame('https://z2mjd9.csb.app/')">Deltarune</div>
+      <div class="carousel-item" onclick="openGame('https://c8t3fk.csb.app/')">Poly Track</div>
+      <div class="carousel-item" onclick="openGame('https://l5483t.csb.app/')">Infinite Craft</div>
+      <div class="carousel-item" onclick="openGame('https://kclvhw.csb.app/')">Escape Road</div>
+      <div class="carousel-item" onclick="openGame('https://67nswf.csb.app/')">Balatro</div>
+      <div class="carousel-item" onclick="openGame('https://v9t57z.csb.app/')">Chicken War</div>
+      <div class="carousel-item" onclick="openGame('https://ytswf6.csb.app/')">That's Not my Neighbor</div>
+      <div class="carousel-item" onclick="openGame('https://swqvsd.csb.app/')">Webfishing</div>
+      <div class="carousel-item" onclick="openGame('https://turbowarp.org/1947439/embed')">Peggle</div>
+      <div class="carousel-item" onclick="openGame('https://turbowarp.org/590926828/embed')">Terraria</div>
+      <div class="carousel-item" onclick="openGame('https://turbowarp.org/131270192/embed')">Diep.io</div>
     </div>
   </div>
 
@@ -740,46 +378,14 @@ body {
   <div class="section" id="movies">
     <h2>Movies</h2>
     <div class="carousel">
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/137106-the-lego-movie" target="_blank"
-          >The Lego Movie</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/329-jurassic-park" target="_blank"
-          >Jurassic Park</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/330-the-lost-world-jurassic-park" target="_blank"
-          >Jurassic Park: Lost World</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/331-jurassic-park-iii" target="_blank"
-          >Jurassic Park 3</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/135397-jurassic-world" target="_blank"
-          >Jurassic World</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/351286-jurassic-world-fallen-kingdom" target="_blank"
-          >Jurassic World: Fallen Kingdom</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/507086-jurassic-world-dominion" target="_blank"
-          >Jurassic World: Dominion</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/movies/1234821-jurassic-world-rebirth" target="_blank"
-          >Jurassic World: Rebirth</a
-        >
-      </div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/137106-the-lego-movie" target="_blank">The Lego Movie</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/329-jurassic-park" target="_blank">Jurassic Park</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/330-the-lost-world-jurassic-park" target="_blank">Jurassic Park: Lost World</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/331-jurassic-park-iii" target="_blank">Jurassic Park 3</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/135397-jurassic-world" target="_blank">Jurassic World</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/351286-jurassic-world-fallen-kingdom" target="_blank">Jurassic World: Fallen Kingdom</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/507086-jurassic-world-dominion" target="_blank">Jurassic World: Dominion</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/movies/1234821-jurassic-world-rebirth" target="_blank">Jurassic World: Rebirth</a></div>
     </div>
   </div>
 
@@ -787,55 +393,17 @@ body {
   <div class="section" id="tvshows">
     <h2>TV Shows</h2>
     <div class="carousel">
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/93405-squid-game" target="_blank">Squid Game</a>
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/456-the-simpsons" target="_blank">The Simpsons</a>
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/200875-it-welcome-to-derry" target="_blank"
-          >IT: Welcome to Derry</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/18165-the-vampire-diaries" target="_blank"
-          >The Vampire Diaries</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/1405-dexter" target="_blank">Dexter</a>
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/131927-dexter-new-blood" target="_blank"
-          >Dexter: New Blood</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/259909-dexter-resurrection" target="_blank"
-          >Dexter: Resurrection</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/219937-dexter-original-sin" target="_blank"
-          >Dexter: Original Sin</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/66732-stranger-things" target="_blank"
-          >Stranger Things</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/194766-the-summer-i-turned-pretty" target="_blank"
-          >The Summer I Turned Pretty</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://www.1shows.ru/tv/97645-solar-opposites" target="_blank"
-          >Solar Opposites</a
-        >
-      </div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/93405-squid-game" target="_blank">Squid Game</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/456-the-simpsons" target="_blank">The Simpsons</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/200875-it-welcome-to-derry" target="_blank">IT: Welcome to Derry</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/18165-the-vampire-diaries" target="_blank">The Vampire Diaries</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/1405-dexter" target="_blank">Dexter</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/131927-dexter-new-blood" target="_blank">Dexter: New Blood</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/259909-dexter-resurrection" target="_blank">Dexter: Resurrection</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/219937-dexter-original-sin" target="_blank">Dexter: Original Sin</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/66732-stranger-things" target="_blank">Stranger Things</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/194766-the-summer-i-turned-pretty" target="_blank">The Summer I Turned Pretty</a></div>
+      <div class="carousel-item"><a href="https://www.1shows.ru/tv/97645-solar-opposites" target="_blank">Solar Opposites</a></div>
     </div>
   </div>
 
@@ -843,105 +411,23 @@ body {
   <div class="section" id="youtube">
     <h2>YouTube Channels</h2>
     <div class="carousel">
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/youtube/degenerocity"
-          target="_blank"
-          >Degenerocity</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/mrbeast" target="_blank"
-          >MrBeast</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/jynxzi" target="_blank"
-          >Jynxzi</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/youtube/coryxkenshin"
-          target="_blank"
-          >CoryxKenshin</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/youtube/joe-bartolozzi"
-          target="_blank"
-          >Joe Bartolozzi</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/ice-711" target="_blank"
-          >Ice 711</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/swiss001" target="_blank"
-          >Swiss001</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/ludwig" target="_blank"
-          >Ludwig</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/youtube/supersnailsoy"
-          target="_blank"
-          >SuperSnailBoy</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/sur-ronster" target="_blank"
-          >Sur Ronster</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/youtube/aquatic-neptune"
-          target="_blank"
-          >Aquatic Neptune</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/fern" target="_blank"
-          >Fern</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/sml" target="_blank"
-          >SML</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/youtube/derekfdb"
-          target="_blank"
-          >Derekfdb</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/youtube/tyler-blanchard"
-          target="_blank"
-          >Tyler Blanchard</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/dougdoug" target="_blank"
-          >DougDoug</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/youtube/ish" target="_blank"
-          >Ish</a
-        >
-      </div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/degenerocity" target="_blank">Degenerocity</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/mrbeast" target="_blank">MrBeast</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/jynxzi" target="_blank">Jynxzi</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/coryxkenshin" target="_blank">CoryxKenshin</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/joe-bartolozzi" target="_blank">Joe Bartolozzi</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/ice-711" target="_blank">Ice 711</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/swiss001" target="_blank">Swiss001</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/ludwig" target="_blank">Ludwig</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/supersnailsoy" target="_blank">SuperSnailBoy</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/sur-ronster" target="_blank">Sur Ronster</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/aquatic-neptune" target="_blank">Aquatic Neptune</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/fern" target="_blank">Fern</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/sml" target="_blank">SML</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/derekfdb" target="_blank">Derekfdb</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/tyler-blanchard" target="_blank">Tyler Blanchard</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/dougdoug" target="_blank">DougDoug</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/youtube/ish" target="_blank">Ish</a></div>
     </div>
   </div>
 
@@ -949,41 +435,17 @@ body {
   <div class="section" id="music">
     <h2>Music Artists</h2>
     <div class="carousel">
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/music/katseye" target="_blank"
-          >Katseye</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/music/pharrell-williams"
-          target="_blank"
-          >Pharrell Williams</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a href="https://sites.google.com/view/applegames-apple/music/leon-thomas" target="_blank"
-          >Leon Thomas</a
-        >
-      </div>
-      <div class="carousel-item">
-        <a
-          href="https://sites.google.com/view/applegames-apple/music/tyler-the-creator"
-          target="_blank"
-          >Tyler The Creator</a
-        >
-      </div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/music/katseye" target="_blank">Katseye</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/music/pharrell-williams" target="_blank">Pharrell Williams</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/music/leon-thomas" target="_blank">Leon Thomas</a></div>
+      <div class="carousel-item"><a href="https://sites.google.com/view/applegames-apple/music/tyler-the-creator" target="_blank">Tyler The Creator</a></div>
     </div>
   </div>
 
   <!-- Unblocked Google Section -->
   <div class="section" id="unblocked">
     <h2>Unblocked Google</h2>
-    <a
-      href="https://sites.google.com/view/applegames-apple/unblocked-google"
-      target="_blank"
-      >Go to Unblocked Google</a
-    >
+    <a href="https://sites.google.com/view/applegames-apple/unblocked-google" target="_blank">Go to Unblocked Google</a>
   </div>
 
   <!-- Emulator Section -->
@@ -1002,105 +464,57 @@ body {
   <div class="section" id="forms">
     <h2>Forms</h2>
     <div class="carousel">
-      <div class="carousel-item">
-        <iframe
-          src="https://forms.gle/nPqrA8W8tDSMcPbn9"
-          style="width: 300px; height: 400px"
-        ></iframe>
-      </div>
-      <div class="carousel-item">
-        <iframe
-          src="https://forms.gle/3ktVirMLybjacm3x7"
-          style="width: 300px; height: 400px"
-        ></iframe>
-      </div>
-      <div class="carousel-item">
-        <iframe
-          src="https://forms.gle/axr8sKvAbUDGyV8a7"
-          style="width: 300px; height: 400px"
-        ></iframe>
-      </div>
-      <div class="carousel-item">
-        <iframe
-          src="https://forms.gle/bMQDXbzFtgLbEWkr9"
-          style="width: 300px; height: 400px"
-        ></iframe>
-      </div>
-      <div class="carousel-item">
-        <iframe
-          src="https://forms.gle/xTtMDb1cm9kqdmx8A"
-          style="width: 300px; height: 400px"
-        ></iframe>
-      </div>
+      <div class="carousel-item"><iframe src="https://forms.gle/nPqrA8W8tDSMcPbn9" style="width:300px;height:400px;"></iframe></div>
+      <div class="carousel-item"><iframe src="https://forms.gle/3ktVirMLybjacm3x7" style="width:300px;height:400px;"></iframe></div>
+      <div class="carousel-item"><iframe src="https://forms.gle/axr8sKvAbUDGyV8a7" style="width:300px;height:400px;"></iframe></div>
+      <div class="carousel-item"><iframe src="https://forms.gle/bMQDXbzFtgLbEWkr9" style="width:300px;height:400px;"></iframe></div>
+      <div class="carousel-item"><iframe src="https://forms.gle/xTtMDb1cm9kqdmx8A" style="width:300px;height:400px;"></iframe></div>
     </div>
   </div>
 
   <!-- Water Section -->
   <div class="section" id="water">
     <h2>Water</h2>
-    <p>
-      Password:
-      <strong>i1ovewater, skibiti, funni</strong>
-    </p>
-    <a
-      href="https://sites.google.com/view/i-love-water-so-much"
-      target="_blank"
-      style="color: #1e90ff; text-decoration: underline"
-      >Go to Water Page</a
-    >
+    <p>Password: <strong>i1ovewater, skibiti, funni</strong></p>
+    <a href="https://sites.google.com/view/i-love-water-so-much" target="_blank" style="color:#1e90ff; text-decoration:underline;">Go to Water Page</a>
   </div>
 
-  <!-- Site Logo -->
+  <!-- Site logo -->
   <div class="site-logo">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M60 40 V120 Q60 160 100 160 Q140 160 140 120 V40"
-        fill="none"
-        stroke="white"
-        stroke-width="20"
-        stroke-linecap="round"
-      />
+      <path d="M60 40 V120 Q60 160 100 160 Q140 160 140 120 V40"
+            fill="none" stroke="white" stroke-width="20" stroke-linecap="round"/>
     </svg>
   </div>
 
   <!-- Home Button -->
-  <button
-    id="homeBtn"
-    onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'});"
-  >
-    Home
-  </button>
+  <button id="homeBtn" onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'});">Home</button>
+
 </div>
 
-<!-- ===================== SCRIPTS ===================== -->
+<!-- =============== SCRIPTS =============== -->
 <script>
 function unlockSite() {
   var pwd = prompt("Enter password:");
 
-  if (pwd === null) {
-    return; // cancelled
-  }
+  if (pwd === null) return;
 
   if (pwd === "ihatehw385") {
-    // hide fake LaunchPad stuff
+    // hide screenshot
     document.getElementById("lockScreen").style.display = "none";
-    document.querySelector(".topbar").style.display = "none";
-    document.querySelector(".dock").style.display = "none";
-    document.querySelector(".corner-tree").style.display = "none";
-
     // show real site
     var rs = document.getElementById("realSite");
     rs.style.display = "block";
+    document.body.style.overflow = "auto";
     window.scrollTo(0, 0);
   } else {
     alert("Incorrect password.");
   }
 }
 
-/* ====== Unblocked Hub functionality ====== */
-
-// Dark mode toggle
+// Setup Unblocked Hub functionality
 document.addEventListener("DOMContentLoaded", function () {
+  // Dark Mode
   var darkBtn = document.getElementById("darkModeBtn");
   if (darkBtn) {
     darkBtn.addEventListener("click", function () {
@@ -1109,7 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Emulator drag & drop
+  // Emulator
   var emulator = document.getElementById("emulatorDiv");
   var fileInput = document.getElementById("fileInput");
   var fileInfo = document.getElementById("fileInfo");
@@ -1136,8 +550,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function handleFile(file) {
       if (!file) return;
-      fileInfo.textContent =
-        "File selected: " + file.name + " (" + file.size + " bytes)";
+      fileInfo.textContent = "File selected: " + file.name + " (" + file.size + " bytes)";
     }
   }
 
@@ -1146,14 +559,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (searchInput) {
     searchInput.addEventListener("input", function () {
       var query = searchInput.value.toLowerCase();
-      document
-        .querySelectorAll("#realSite .carousel-item a, #realSite .carousel-item")
-        .forEach(function (item) {
-          var text = item.textContent || "";
-          item.style.display = text.toLowerCase().includes(query)
-            ? "block"
-            : "none";
-        });
+      document.querySelectorAll("#realSite .carousel-item a, #realSite .carousel-item").forEach(function (item) {
+        var text = (item.textContent || "").toLowerCase();
+        item.style.display = text.includes(query) ? "block" : "none";
+      });
     });
   }
 });
