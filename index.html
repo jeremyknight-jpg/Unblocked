@@ -17,7 +17,9 @@ body {
   font-family: Arial, sans-serif;
   background: #000;
   color: #fff;
+  /* start locked (no scroll) until unlocked */
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ===== LOCK SCREEN (YOUR SCREENSHOT) ===== */
@@ -32,19 +34,15 @@ body {
 #lockImage {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* fills the screen, looks exactly like screenshot */
+  object-fit: cover;
   display: block;
 }
 
-/* Invisible clickable area over Progress Learning tile
-   Adjust top/left/width/height if needed so it sits on top of the app */
-
 #progressHitbox {
   position: absolute;
-  /* ✏️ Tweak these if the clickable area is slightly off */
-  top: 52%;   /* % from top of screenshot */
-  left: 55%;  /* % from left of screenshot */
-  width: 10%; /* size of the hitbox */
+  top: 52%;
+  left: 55%;
+  width: 10%;
   height: 15%;
   background: transparent;
   border: none;
@@ -52,7 +50,6 @@ body {
   padding: 0;
 }
 
-/* No focus outline (so it still looks exactly like the screenshot) */
 #progressHitbox:focus {
   outline: none;
 }
@@ -60,7 +57,7 @@ body {
 /* ===== REAL SITE (HIDDEN INITIALLY) ===== */
 
 #realSite {
-  display: none;                /* only show after correct password */
+  display: none;
   font-family: Arial, sans-serif;
   background-color: #121212;
   color: #fff;
@@ -116,7 +113,7 @@ body {
 
 #realSite #home {
   text-align: center;
-  padding: 100px 20px;
+  padding: 80px 20px 40px; /* header is above now */
 }
 
 #realSite #home h1 {
@@ -133,7 +130,7 @@ body {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  z-index: 1000;
+  z-index: 99999; /* ensure above site-logo */
   background-color: #1e1e1e;
   color: #fff;
   border: none;
@@ -185,35 +182,80 @@ body {
   cursor: pointer;
   text-align: center;
   flex-shrink: 0;
+  user-select: none;
 }
 
 #realSite .carousel-item:hover {
   background: #333;
 }
 
-#realSite iframe.fullscreen {
+/* ===== Game Viewer (simulated fullscreen) ===== */
+#gameViewerBackdrop {
+  display: none; /* shown when a game is open */
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 2000;
-  border: none;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 2500;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
+/* container that limits the viewer size but looks fullscreen */
+#gameViewer {
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+  max-height: 90vh;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* iframe inside viewer */
+#gameViewer iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* close button in top-right */
+#gameViewerClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2600;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* small screens */
+@media (max-width: 700px) {
+  #gameViewer {
+    max-height: 95vh;
+    border-radius: 6px;
+  }
+}
+
+/* Emulator */
 #realSite .emulator {
   border: 2px dashed #fff;
-  padding: 50px;
+  padding: 30px;
   text-align: center;
   border-radius: 15px;
   max-width: 90%;
   margin: 0 auto;
 }
 
-#realSite .emulator.dragover {
-  background-color: rgba(255,255,255,0.1);
-}
-
+/* hide the file input */
 #realSite input[type="file"] {
   display: none;
 }
@@ -252,22 +294,14 @@ body {
 
 <!-- =============== LOCKED SCREEN WITH YOUR SCREENSHOT =============== -->
 <div id="lockScreen">
-  <!-- 🔴 Change src if your screenshot has a different file name -->
   <img id="lockImage" src="launchpad.png" alt="LaunchPad screenshot" />
-
-  <!-- Invisible click area over Progress Learning -->
   <button id="progressHitbox" onclick="unlockSite()" aria-label="Progress Learning"></button>
 </div>
 
 <!-- =============== REAL UNBLOCKED HUB SITE (HIDDEN) =============== -->
 <div id="realSite">
 
-  <!-- Home Section -->
-  <div class="section" id="home">
-    <h1>Unblocked Hub</h1>
-    <h3>Updates every week</h3>
-  </div>
-
+  <!-- Header (moved above Home for better UX) -->
   <header>
     <nav>
       <a href="#home">Home</a>
@@ -287,6 +321,12 @@ body {
     </div>
   </header>
 
+  <!-- Home Section -->
+  <div class="section" id="home">
+    <h1>Unblocked Hub</h1>
+    <h3>Updates every week</h3>
+  </div>
+
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Search..." />
   </div>
@@ -294,7 +334,10 @@ body {
   <!-- Games Section -->
   <div class="section" id="games">
     <h2>Games</h2>
+
+    <!-- carousel -->
     <div class="carousel" id="gamesCarousel">
+      <!-- keep all your items (preserved) -->
       <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=6')">Block Blast</div>
       <div class="carousel-item" onclick="openGame('https://7vfx6j.csb.app/')">They are Coming</div>
       <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=468')">Hollow Knight</div>
@@ -372,6 +415,14 @@ body {
       <div class="carousel-item" onclick="openGame('https://turbowarp.org/590926828/embed')">Terraria</div>
       <div class="carousel-item" onclick="openGame('https://turbowarp.org/131270192/embed')">Diep.io</div>
     </div>
+
+    <!-- Game viewer (simulated fullscreen area) -->
+    <div id="gameViewerBackdrop" aria-hidden="true">
+      <div id="gameViewer" role="dialog" aria-label="Game viewer">
+        <button id="gameViewerClose" aria-label="Close game">✖</button>
+        <!-- iframe will be injected here when opening a game -->
+      </div>
+    </div>
   </div>
 
   <!-- Movies Section -->
@@ -442,7 +493,7 @@ body {
     </div>
   </div>
 
-  <!-- Unblocked Google Section -->
+  <!-- Unblocked Google -->
   <div class="section" id="unblocked">
     <h2>Unblocked Google</h2>
     <a href="https://sites.google.com/view/applegames-apple/unblocked-google" target="_blank">Go to Unblocked Google</a>
@@ -494,13 +545,19 @@ body {
 
 <!-- =============== SCRIPTS =============== -->
 <script>
+/* ======================
+   Unlock / initial setup
+   ====================== */
 function unlockSite() {
   var pwd = prompt("Enter password:");
   if (pwd === null) return;
 
   if (pwd === "ihatehw385") {
+    // hide screenshot and show real site
     document.getElementById("lockScreen").style.display = "none";
-    document.getElementById("realSite").style.display = "block";
+    var rs = document.getElementById("realSite");
+    rs.style.display = "block";
+    // allow scrolling now
     document.body.style.overflow = "auto";
     window.scrollTo(0, 0);
   } else {
@@ -508,6 +565,9 @@ function unlockSite() {
   }
 }
 
+/* ======================
+   Core UI behavior
+   ====================== */
 document.addEventListener("DOMContentLoaded", function () {
 
   // Dark Mode Toggle
@@ -523,92 +583,132 @@ document.addEventListener("DOMContentLoaded", function () {
   var fileInput = document.getElementById("fileInput");
   var fileInfo = document.getElementById("fileInfo");
 
-  if (emulator && fileInput) {
-    emulator.addEventListener("dragover", e => {
+  if (emulator && fileInput && fileInfo) {
+    emulator.addEventListener("dragover", function (e) {
       e.preventDefault();
       emulator.classList.add("dragover");
     });
 
-    emulator.addEventListener("dragleave", () => {
+    emulator.addEventListener("dragleave", function () {
       emulator.classList.remove("dragover");
     });
 
-    emulator.addEventListener("drop", e => {
+    emulator.addEventListener("drop", function (e) {
       e.preventDefault();
       emulator.classList.remove("dragover");
       handleFile(e.dataTransfer.files[0]);
     });
 
-    fileInput.addEventListener("change", () => {
+    fileInput.addEventListener("change", function () {
       handleFile(fileInput.files[0]);
     });
 
     function handleFile(file) {
       if (!file) return;
-      fileInfo.textContent = `File selected: ${file.name} (${file.size} bytes)`;
+      fileInfo.textContent = "File selected: " + file.name + " (" + file.size + " bytes)";
     }
   }
 
-  // Search Bar Filter
+  // Search Bar Filter (only hides carousel items, preserves event handlers)
   var searchInput = document.getElementById("searchInput");
-  searchInput.addEventListener("input", function () {
-    let query = searchInput.value.toLowerCase();
-
-    document.querySelectorAll(".carousel-item").forEach(item => {
-      let text = item.textContent.toLowerCase();
-      item.style.display = text.includes(query) ? "" : "none";
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      var query = searchInput.value.toLowerCase();
+      document.querySelectorAll(".carousel-item").forEach(function (item) {
+        var text = (item.textContent || "").toLowerCase();
+        item.style.display = text.includes(query) ? "" : "none";
+      });
     });
-  });
+  }
+
+  // Close viewer button binding (exists in DOM under games section)
+  var backdrop = document.getElementById("gameViewerBackdrop");
+  var closeBtn = document.getElementById("gameViewerClose");
+  if (closeBtn && backdrop) {
+    closeBtn.addEventListener("click", closeGame);
+    // clicking backdrop outside viewer also closes
+    backdrop.addEventListener("click", function (e) {
+      if (e.target === backdrop) closeGame();
+    });
+  }
 });
 
-// ========================
-//  GAME FULLSCREEN FIX
-// ========================
+/* ========================
+   Game Viewer (Option B)
+   ======================== */
 
-let currentIframe = null;
-
+var currentViewerIframe = null;
 function openGame(url) {
-  if (currentIframe) return;
+  // ensure realSite is visible; if someone tries opening before unlock, ignore
+  if (document.getElementById("realSite").style.display !== "block") {
+    // optionally you could call unlockSite() here
+    alert("Please unlock the site first.");
+    return;
+  }
 
-  const iframe = document.createElement("iframe");
+  // Get viewer elements
+  var backdrop = document.getElementById("gameViewerBackdrop");
+  var viewer = document.getElementById("gameViewer");
+
+  // Remove existing iframe if any
+  if (currentViewerIframe) {
+    try { currentViewerIframe.remove(); } catch (e) {}
+    currentViewerIframe = null;
+  }
+
+  // Create iframe and inject into viewer (not into body)
+  var iframe = document.createElement("iframe");
   iframe.src = url;
-  iframe.className = "fullscreen";
-  iframe.allowFullscreen = true;
+  iframe.setAttribute("allowfullscreen", "");
+  iframe.setAttribute("frameborder", "0");
+  iframe.style.background = "#000";
+  // some sites block embedding — user will get message inside iframe if so
 
-  const exitBtn = document.createElement("button");
-  exitBtn.textContent = "✖";
-  exitBtn.style.position = "fixed";
-  exitBtn.style.top = "20px";
-  exitBtn.style.right = "20px";
-  exitBtn.style.zIndex = "3000";
-  exitBtn.style.fontSize = "30px";
-  exitBtn.style.padding = "5px 12px";
-  exitBtn.style.border = "none";
-  exitBtn.style.borderRadius = "8px";
-  exitBtn.style.background = "rgba(0,0,0,0.6)";
-  exitBtn.style.color = "white";
-  exitBtn.style.cursor = "pointer";
-  exitBtn.onclick = closeGame;
+  // Append iframe as first child (keep close button on top)
+  // ensure we insert after the close button
+  var closeBtn = document.getElementById("gameViewerClose");
+  if (closeBtn && closeBtn.nextSibling) {
+    viewer.insertBefore(iframe, closeBtn.nextSibling);
+  } else {
+    viewer.appendChild(iframe);
+  }
 
+  currentViewerIframe = iframe;
+
+  // Show backdrop & lock body scroll
+  backdrop.style.display = "flex";
+  backdrop.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
-  document.body.appendChild(iframe);
-  document.body.appendChild(exitBtn);
-
-  currentIframe = iframe;
-  currentIframe.exitBtn = exitBtn;
+  // focus for keyboard escape handling
+  iframe.focus();
 }
 
 function closeGame() {
-  if (!currentIframe) return;
+  var backdrop = document.getElementById("gameViewerBackdrop");
+  var viewer = document.getElementById("gameViewer");
+  if (!backdrop) return;
 
-  document.body.removeChild(currentIframe);
-  document.body.removeChild(currentIframe.exitBtn);
+  // remove iframe
+  if (currentViewerIframe) {
+    try { currentViewerIframe.remove(); } catch (e) {}
+    currentViewerIframe = null;
+  }
+
+  backdrop.style.display = "none";
+  backdrop.setAttribute("aria-hidden", "true");
+  // restore scrolling
   document.body.style.overflow = "auto";
-  currentIframe = null;
 }
 
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeGame();
+// ESC key closes viewer
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    // if viewer is visible, close it
+    var backdrop = document.getElementById("gameViewerBackdrop");
+    if (backdrop && backdrop.style.display === "flex") {
+      closeGame();
+    }
+  }
 });
 </script>
 </body>
