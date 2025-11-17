@@ -512,7 +512,7 @@ function unlockSite() {
   }
 }
 
- <script>
+<script>
 function unlockSite() {
   var pwd = prompt("Enter password:");
   if (pwd === null) return;
@@ -613,10 +613,8 @@ function openGame(url) {
 
   exitBtn.onclick = closeGame;
 
-  // Lock scrolling
   document.body.style.overflow = "hidden";
 
-  // Add elements
   document.body.appendChild(iframe);
   document.body.appendChild(exitBtn);
 
@@ -635,10 +633,10 @@ function closeGame() {
   currentIframe = null;
 }
 
-// Close fullscreen on ESC key
+// ESC key closes game
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeGame();
 });
-</script> 
+</script>
 </body>
 </html>
