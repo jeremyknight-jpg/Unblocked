@@ -744,28 +744,41 @@ function closeGame() {
   var viewer = document.getElementById("gameViewer");
   if (!backdrop) return;
 
-  // remove iframe
+   // Remove existing iframe if any
   if (currentViewerIframe) {
-    try { currentViewerIframe.remove(); } catch (e) {}
-    currentViewerIframe = null;
-  }
-
-  backdrop.style.display = "none";
-  backdrop.setAttribute("aria-hidden", "true");
-  // restore scrolling
-  document.body.style.overflow = "auto";
-}
-
-// ESC key closes viewer
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") {
-    // if viewer is visible, close it
-    var backdrop = document.getElementById("gameViewerBackdrop");
-    if (backdrop && backdrop.style.display === "flex") {
-      closeGame();
+    try { 
+      currentViewerIframe.remove(); 
+    } catch (e) {
+      console.error(e);
     }
   }
-});
+
+  // Create new iframe
+  currentViewerIframe = document.createElement("iframe");
+  currentViewerIframe.src = url;
+
+  // Insert iframe into viewer
+  viewer.appendChild(currentViewerIframe);
+
+  // Show viewer
+  backdrop.style.display = "flex";
+}
+
+function closeGame() {
+  var backdrop = document.getElementById("gameViewerBackdrop");
+
+  backdrop.style.display = "none";
+
+  // Remove iframe when closing
+  if (currentViewerIframe) {
+    try {
+      currentViewerIframe.remove();
+    } catch (e) {}
+    currentViewerIframe = null;
+  }
+}
 </script>
+
 </body>
 </html>
+
