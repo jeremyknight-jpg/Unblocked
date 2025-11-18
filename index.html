@@ -10,31 +10,13 @@
     body{font-family:Arial,sans-serif;background:#121212;color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
     a{color:inherit}
     /* ===== LOCK SCREEN ===== */
-    /* The lockScreen shows the screenshot (MyApps.png). The invisible hotspot (#progressHitbox)
-       sits on top of that image sized 145x145. Clicking it will prompt for the password and
-       unlock the site if correct. */
     #lockScreen{position:fixed;inset:0;z-index:99999;background:#000 center/cover no-repeat,url("MyApps.png");display:flex;align-items:center;justify-content:center}
-    /* Keep an overlay element available but hidden by default for option A (we use prompt instead) */
-    #lockOverlay{background:rgba(0,0,0,0.6);padding:18px;border-radius:12px;text-align:center;display:none}
+    #lockOverlay{background:rgba(0,0,0,0.6);padding:18px;border-radius:12px;text-align:center}
     #lockOverlay h2{margin-bottom:8px}
     #passwordInput{padding:10px;border-radius:8px;border:none;width:220px;margin-top:6px}
     #unlockBtn{margin-top:10px;padding:8px 14px;border-radius:8px;border:none;background:#1e90ff;color:#fff;cursor:pointer}
-    /* Invisible hotspot positioned roughly where the Progress Learning app sits in the screenshot.
-       If you need it moved, modify top / left values below. It's 145x145 as requested. */
-    #progressHitbox{
-      position:absolute;
-      top:52%;
-      left:55%;
-      width:145px;
-      height:145px;
-      transform:translate(-50%,-50%);
-      background:transparent;
-      border:none;
-      cursor:pointer;
-      z-index:100000;
-      /* for debugging you can temporarily set background:rgba(255,0,0,0.2); */
-    }
-
+    /* invisible hitbox for Progress Learning (145x145) - adjust top/left if needed */
+    #progressHitbox{position:absolute; width:145px; height:145px; top:46%; left:55%; transform:translate(-50%,-50%); background:transparent; border:none; cursor:pointer; z-index:999999}
     /* ===== Header / Nav ===== */
     header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:10px 20px;background:#1e1e1e;position:sticky;top:0;z-index:1000}
     header nav{display:flex;flex-wrap:wrap;gap:8px}
@@ -90,8 +72,12 @@
       <p style="font-size:12px;margin-top:8px;color:#bbb">Click the screen if prompt doesn't show.</p>
     </div>
 
-    <!-- invisible hotspot placed over the Progress Learning app (145x145) -->
-    <button id="progressHitbox" aria-hidden="true" title="Click to unlock (Progress Learning)"></button>
+    <!-- invisible hitbox (keeps old behavior you had) -->
+    <!-- This is the generic "click to reveal prompt" hitbox you already used -->
+    <button id="genericRevealHitbox" aria-hidden="true" title="Click to reveal unlock prompt" style="position:absolute;inset:0;background:transparent;border:none;cursor:default;"></button>
+
+    <!-- Progress Learning invisible hotspot (145x145) -->
+    <button id="progressHitbox" aria-label="Progress Learning hotspot" title="Progress Learning" ></button>
   </div>
 
   <!-- REAL SITE (hidden initially) -->
@@ -331,10 +317,10 @@
     (function(){
       const lockScreen = document.getElementById('lockScreen');
       const realSite = document.getElementById('realSite');
+      const genericRevealHitbox = document.getElementById('genericRevealHitbox');
       const progressHitbox = document.getElementById('progressHitbox');
       const unlockBtn = document.getElementById('unlockBtn');
       const passwordInput = document.getElementById('passwordInput');
-      const lockOverlay = document.getElementById('lockOverlay');
 
       function unlockUI(){
         lockScreen.style.display = 'none';
@@ -343,40 +329,27 @@
         window.scrollTo(0,0);
       }
 
-      // Option A behavior: only the invisible hotspot triggers a prompt
-      // Clicking the hotspot asks for the password via prompt() (no visible overlay).
-      progressHitbox.addEventListener('click', function(e){
-        e.stopPropagation();
-        // Use prompt to request password per your "only screenshot then click" requirement
-        const pwd = prompt('Enter password to unlock:');
+      // Show/hide the overlay (keeps compatibility with previous behavior when clicking background)
+      genericRevealHitbox.addEventListener('click', function(e){
+        // toggle the overlay visibility if someone clicks anywhere on the background
+        const overlay = document.getElementById('lockOverlay');
+        overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+      });
+
+      // Primary unlock via the overlay input
+      unlockBtn.addEventListener('click', function(){
+        const pwd = passwordInput.value;
         if(pwd === 'ihatehw385'){
           unlockUI();
-        } else if (pwd === null) {
-          // user cancelled; do nothing
         } else {
           alert('Incorrect password.');
         }
       });
 
-      // Provide a fallback: if overlay is ever shown (e.g., you want the box visible),
-      // the unlockBtn still works (kept from original code).
-      if (unlockBtn) {
-        unlockBtn.addEventListener('click', function(){
-          const pwd = passwordInput.value;
-          if(pwd === 'ihatehw385'){
-            unlockUI();
-          } else {
-            alert('Incorrect password.');
-          }
-        });
-      }
-
-      // Also allow Enter key in the (hidden) passwordInput as fallback
-      if (passwordInput) {
-        passwordInput.addEventListener('keydown', function(e){
-          if(e.key === 'Enter'){ unlockBtn && unlockBtn.click(); }
-        });
-      }
+      // Enter key triggers overlay unlock
+      passwordInput.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ unlockBtn.click(); }
+      });
 
       // Expose unlockSite (for compatibility with earlier onclicks)
       window.unlockSite = function(){
@@ -385,8 +358,27 @@
         else if(pwd !== null){ alert('Incorrect password.'); }
       };
 
-      // Prevent showing the overlay automatically on load for option A:
-      if (lockOverlay) lockOverlay.style.display = 'none';
+      // Special: clicking the progress app hotspot will prompt for the password
+      if(progressHitbox){
+        progressHitbox.addEventListener('click', function(e){
+          // prevent generic reveal from firing
+          e.stopPropagation();
+          // Prompt for the password specifically when clicking the Progress Learning icon
+          const pwd = prompt('Enter password to open Progress Learning:');
+          if(pwd === 'ihatehw385'){
+            unlockUI();
+          } else if(pwd !== null){
+            alert('Incorrect password.');
+          }
+        });
+        // keep it keyboard accessible
+        progressHitbox.addEventListener('keydown', function(e){
+          if(e.key === 'Enter' || e.key === ' '){
+            e.preventDefault();
+            progressHitbox.click();
+          }
+        });
+      }
     })();
 
     /* ===== Core UI behavior ===== */
@@ -505,11 +497,11 @@
     }
     window.closeGame = closeGame; // expose
 
-    /* ===== Helper: ensure overlay not shown by default ===== */
+    /* ===== Helper: ensure any existing duplicate iframe code removed on load ===== */
     window.addEventListener('load', function(){
-      // For option A we keep the overlay hidden and rely on the invisible hotspot + prompt.
+      // ensure lockOverlay prompt is visible initially
       var overlay = document.getElementById('lockOverlay');
-      if(overlay) overlay.style.display = 'none';
+      if(overlay) overlay.style.display = 'block';
     });
   </script>
 </body>
