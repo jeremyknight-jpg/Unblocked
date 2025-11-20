@@ -6,84 +6,268 @@
   <title>Unblocked Hub — My Apps</title>
   <style>
     /* ===== Global ===== */
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial,sans-serif;background:#121212;color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-    a{color:inherit}
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:Arial,sans-serif;
+      background:#121212;
+      color:#fff;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+    a { color:inherit; }
+
     /* ===== LOCK SCREEN ===== */
-    #lockScreen{position:fixed;inset:0;z-index:99999;background: #000 url("MyApps.png") center/cover no-repeat;display:flex;align-items:center;justify-content:center}
+    #lockScreen{
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      background:#000 url("MyApps.png") center/cover no-repeat;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
     #lockOverlay{
       background:rgba(0,0,0,0.6);
       padding:18px;
       border-radius:12px;
       text-align:center;
-      display:none;
+      display:none;   /* start hidden – only shows after Progress click */
     }
     #lockOverlay h2{margin-bottom:8px}
-    #passwordInput{padding:10px;border-radius:8px;border:none;width:220px;margin-top:6px}
-    #unlockBtn{margin-top:10px;padding:8px 14px;border-radius:8px;border:none;background:#1e90ff;color:#fff;cursor:pointer}
-    /* invisible hitbox for Progress Learning (145x145) - adjust top/left if needed */
-    #progressHitbox{position:absolute; width:145px; height:145px; top:46%; left:55%; transform:translate(-50%,-50%); background:transparent; border:none; cursor:pointer; z-index:999999}
+    #passwordInput{
+      padding:10px;
+      border-radius:8px;
+      border:none;
+      width:220px;
+      margin-top:6px;
+    }
+    #unlockBtn{
+      margin-top:10px;
+      padding:8px 14px;
+      border-radius:8px;
+      border:none;
+      background:#1e90ff;
+      color:#fff;
+      cursor:pointer;
+    }
+
+    /* Invisible hitbox FOR PROGRESS LEARNING ONLY
+       Adjust top/left if needed to line up with the icon on MyApps.png  */
+    #progressHitbox{
+      position:absolute;
+      width:145px;
+      height:145px;
+      top:46%;   /* tweak these two values if not perfectly aligned */
+      left:55%;
+      transform:translate(-50%,-50%);
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      z-index:999999;
+    }
+
     /* ===== Header / Nav ===== */
-    header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:10px 20px;background:#1e1e1e;position:sticky;top:0;z-index:1000}
-    header nav{display:flex;flex-wrap:wrap;gap:8px}
-    header nav a{color:inherit;text-decoration:none;padding:6px 8px}
+    header{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 20px;
+      background:#1e1e1e;
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+    header nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    header nav a{
+      color:inherit;
+      text-decoration:none;
+      padding:6px 8px;
+    }
     header nav a:hover{text-decoration:underline}
     header .controls{display:flex;gap:8px}
-    button{padding:10px 14px;border:none;border-radius:6px;background:#333;color:#fff;cursor:pointer}
+    button{
+      padding:10px 14px;
+      border:none;
+      border-radius:6px;
+      background:#333;
+      color:#fff;
+      cursor:pointer;
+    }
     button:hover{background:#555}
+
     /* ===== Sections ===== */
-    .section{padding:30px 20px;border-bottom:1px solid #333}
-    #home{text-align:center;padding:80px 20px 40px}
+    .section{
+      padding:30px 20px;
+      border-bottom:1px solid #333;
+    }
+    #home{
+      text-align:center;
+      padding:80px 20px 40px;
+    }
     #home h1{font-size:2.6rem;margin-bottom:12px}
     #home h3{font-size:1.2rem;color:#ccc}
+
     /* ===== Search ===== */
-    .search-bar{margin:20px 0;display:flex;justify-content:center}
-    .search-bar input{width:80%;padding:10px;border-radius:6px;border:none;outline:none}
+    .search-bar{
+      margin:20px 0;
+      display:flex;
+      justify-content:center;
+    }
+    .search-bar input{
+      width:80%;
+      padding:10px;
+      border-radius:6px;
+      border:none;
+      outline:none;
+    }
+
     /* ===== Carousel / Items ===== */
-    .carousel{display:flex;overflow-x:auto;gap:10px;padding:10px 0}
+    .carousel{
+      display:flex;
+      overflow-x:auto;
+      gap:10px;
+      padding:10px 0;
+    }
     .carousel::-webkit-scrollbar{height:10px}
-    .carousel::-webkit-scrollbar-thumb{background:#555;border-radius:5px}
-    .carousel-item{min-width:200px;background:#1e1e1e;border-radius:10px;padding:10px;cursor:pointer;text-align:center;flex-shrink:0;user-select:none}
-    .carousel-item a{color:inherit;text-decoration:none;display:block}
+    .carousel::-webkit-scrollbar-thumb{
+      background:#555;
+      border-radius:5px;
+    }
+    .carousel-item{
+      min-width:200px;
+      background:#1e1e1e;
+      border-radius:10px;
+      padding:10px;
+      cursor:pointer;
+      text-align:center;
+      flex-shrink:0;
+      user-select:none;
+    }
+    .carousel-item a{
+      color:inherit;
+      text-decoration:none;
+      display:block;
+    }
     .carousel-item:hover{background:#333}
+
     /* ===== Game Viewer Overlay ===== */
-    #gameViewerBackdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:2500;align-items:center;justify-content:center;padding:20px}
-    #gameViewer{width:100%;height:100%;max-width:1400px;max-height:90vh;background:#000;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 10px 40px rgba(0,0,0,0.5)}
-    #gameViewer iframe{width:100%;height:100%;border:none;display:block}
-    #gameViewerClose{position:absolute;top:12px;right:12px;z-index:2600;background:rgba(0,0,0,0.6);color:#fff;border:none;font-size:20px;padding:6px 10px;border-radius:8px;cursor:pointer}
+    #gameViewerBackdrop{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.65);
+      z-index:2500;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    #gameViewer{
+      width:100%;
+      height:100%;
+      max-width:1400px;
+      max-height:90vh;
+      background:#000;
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      box-shadow:0 10px 40px rgba(0,0,0,0.5);
+    }
+    #gameViewer iframe{
+      width:100%;
+      height:100%;
+      border:none;
+      display:block;
+    }
+    #gameViewerClose{
+      position:absolute;
+      top:12px;
+      right:12px;
+      z-index:2600;
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      border:none;
+      font-size:20px;
+      padding:6px 10px;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
     /* ===== Emulator ===== */
-    .emulator{border:2px dashed #fff;padding:30px;text-align:center;border-radius:15px;max-width:90%;margin:0 auto}
+    .emulator{
+      border:2px dashed #fff;
+      padding:30px;
+      text-align:center;
+      border-radius:15px;
+      max-width:90%;
+      margin:0 auto;
+    }
     .emulator.dragover{background:rgba(255,255,255,0.04)}
     input[type=file]{display:none}
-    label.file-btn{display:inline-block;margin-top:20px;padding:10px 20px;background:#1e1e1e;border:1px solid #fff;border-radius:10px;cursor:pointer}
+    label.file-btn{
+      display:inline-block;
+      margin-top:20px;
+      padding:10px 20px;
+      background:#1e1e1e;
+      border:1px solid #fff;
+      border-radius:10px;
+      cursor:pointer;
+    }
     .file-info{margin-top:20px;word-break:break-word}
+
     /* ===== Logo + Home Button ===== */
-    .site-logo{position:fixed;top:10px;left:10px;width:55px;height:55px;z-index:9999}
-    #homeBtn{position:fixed;bottom:20px;left:20px;z-index:9999;background:#1e1e1e;color:#fff;border-radius:10px;padding:10px 15px}
+    .site-logo{
+      position:fixed;
+      top:10px;
+      left:10px;
+      width:55px;
+      height:55px;
+      z-index:9999;
+    }
+    #homeBtn{
+      position:fixed;
+      bottom:20px;
+      left:20px;
+      z-index:9999;
+      background:#1e1e1e;
+      color:#fff;
+      border-radius:10px;
+      padding:10px 15px;
+    }
+
     /* ===== Responsive tweaks ===== */
-    @media (max-width:700px){#home h1{font-size:1.6rem}.carousel-item{min-width:150px}}
+    @media (max-width:700px){
+      #home h1{font-size:1.6rem}
+      .carousel-item{min-width:150px}
+    }
   </style>
 </head>
 <body>
 
   <!-- LOCK SCREEN -->
   <div id="lockScreen" aria-hidden="false">
-    <!-- The background uses MyApps.png -->
+    <!-- password overlay -->
     <div id="lockOverlay" role="dialog" aria-label="Unlock">
       <h2>Enter password to unlock</h2>
       <input id="passwordInput" type="password" placeholder="Password" />
       <div>
         <button id="unlockBtn">Unlock</button>
       </div>
-      <p style="font-size:12px;margin-top:8px;color:#bbb">Click the screen if prompt doesn't show.</p>
+      <p style="font-size:12px;margin-top:8px;color:#bbb">
+        Click the Progress Learning app icon to bring up this box.
+      </p>
     </div>
 
-    <!-- invisible hitbox (keeps old behavior you had) -->
-    <!-- This is the generic "click to reveal prompt" hitbox you already used -->
-    <button id="genericRevealHitbox" aria-hidden="true" title="Click to reveal unlock prompt" style="position:absolute;inset:0;background:transparent;border:none;cursor:default;"></button>
-
-    <!-- Progress Learning invisible hotspot (145x145) -->
-    <button id="progressHitbox" aria-label="Progress Learning hotspot" title="Progress Learning" ></button>
+    <!-- Progress Learning invisible hotspot -->
+    <button
+      id="progressHitbox"
+      aria-label="Progress Learning hotspot"
+      title="Progress Learning">
+    </button>
   </div>
 
   <!-- REAL SITE (hidden initially) -->
@@ -126,7 +310,7 @@
     <div class="section" id="games">
       <h2>Games</h2>
       <div class="carousel" id="gamesCarousel">
-        <!-- All your game entries from original code inserted here -->
+        <!-- all your game items (unchanged) -->
         <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=6')">Block Blast</div>
         <div class="carousel-item" onclick="openGame('https://7vfx6j.csb.app/')">They are Coming</div>
         <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=468')">Hollow Knight</div>
@@ -210,21 +394,15 @@
         <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=588')">Super Mario 64</div>
         <div class="carousel-item" onclick="openGame('https://gn-math.github.io/?id=508')">Super Mario Bros</div>
       </div>
-
-      <!-- Game viewer overlay -->
-      <div id="gameViewerBackdrop" aria-hidden="true">
-        <div id="gameViewer" role="dialog" aria-label="Game viewer">
-          <button id="gameViewerClose" aria-label="Close game">✖</button>
-          <!-- iframe injected here -->
-        </div>
-      </div>
     </div>
 
     <!-- Movies -->
     <div class="section" id="movies">
       <h2>Movies</h2>
       <div class="carousel">
-        <div class="carousel-item"><a href="https://sites.google.com/view/unblocked-hub-movies" target="_blank" rel="noopener">Movies</a></div>
+        <div class="carousel-item">
+          <a href="https://sites.google.com/view/unblocked-hub-movies" target="_blank" rel="noopener">Movies</a>
+        </div>
       </div>
     </div>
 
@@ -232,7 +410,9 @@
     <div class="section" id="tvshows">
       <h2>TV Shows</h2>
       <div class="carousel">
-        <div class="carousel-item"><a href="https://sites.google.com/view/unblocked-hub-tv-shows" target="_blank" rel="noopener">TV Shows</a></div>
+        <div class="carousel-item">
+          <a href="https://sites.google.com/view/unblocked-hub-tv-shows" target="_blank" rel="noopener">TV Shows</a>
+        </div>
       </div>
     </div>
 
@@ -240,7 +420,9 @@
     <div class="section" id="youtube">
       <h2>YouTube Channels</h2>
       <div class="carousel">
-        <div class="carousel-item"><a href="https://sites.google.com/view/unblocked-hub-yt/home" target="_blank" rel="noopener">Unblocked Youtube</a></div>
+        <div class="carousel-item">
+          <a href="https://sites.google.com/view/unblocked-hub-yt/home" target="_blank" rel="noopener">Unblocked Youtube</a>
+        </div>
       </div>
     </div>
 
@@ -248,7 +430,9 @@
     <div class="section" id="anime">
       <h2>Anime</h2>
       <div class="carousel">
-        <div class="carousel-item"><a href="https://sites.google.com/view/unblocked-hub-anime" target="_blank" rel="noopener">Anime</a></div>
+        <div class="carousel-item">
+          <a href="https://sites.google.com/view/unblocked-hub-anime" target="_blank" rel="noopener">Anime</a>
+        </div>
       </div>
     </div>
 
@@ -256,14 +440,18 @@
     <div class="section" id="music">
       <h2>Music Artists</h2>
       <div class="carousel">
-        <div class="carousel-item"><a href="https://sites.google.com/view/unblocked-hub-music/home" target="_blank" rel="noopener">Unblocked Music</a></div>
+        <div class="carousel-item">
+          <a href="https://sites.google.com/view/unblocked-hub-music/home" target="_blank" rel="noopener">Unblocked Music</a>
+        </div>
       </div>
     </div>
 
     <!-- Unblocked Google -->
     <div class="section" id="unblocked">
       <h2>Unblocked Google</h2>
-      <a href="https://sites.google.com/view/applegames-apple/unblocked-google" target="_blank" rel="noopener">Unblocked Google</a>
+      <a href="https://sites.google.com/view/applegames-apple/unblocked-google" target="_blank" rel="noopener">
+        Unblocked Google
+      </a>
     </div>
 
     <!-- Emulator -->
@@ -296,7 +484,9 @@
     <div class="section" id="water">
       <h2>Water</h2>
       <p>Password: <strong>i1ovewater, skibiti, funni</strong></p>
-      <a href="https://sites.google.com/view/i-love-water-so-much" target="_blank" rel="noopener" style="color:#1e90ff;text-decoration:underline">Water</a>
+      <a href="https://sites.google.com/view/i-love-water-so-much" target="_blank" rel="noopener" style="color:#1e90ff;text-decoration:underline">
+        Water
+      </a>
     </div>
 
     <!-- Site logo -->
@@ -311,90 +501,84 @@
 
   </div> <!-- end realSite -->
 
-  <!-- Game viewer backdrop (outside realSite) -->
-  <div id="gameViewerBackdrop" style="display:none;position:fixed;inset:0;z-index:2500;align-items:center;justify-content:center;background:rgba(0,0,0,0.65);">
-    <div id="gameViewer" role="dialog" aria-label="Game viewer" style="width:100%;height:100%;max-width:1400px;max-height:90vh;background:#000;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 10px 40px rgba(0,0,0,0.5);">
-      <button id="gameViewerClose" aria-label="Close game" style="position:absolute;top:12px;right:12px;z-index:2600;background:rgba(0,0,0,0.6);color:white;border:none;font-size:20px;padding:6px 10px;border-radius:8px;cursor:pointer">✖</button>
-      <!-- iframe gets injected by JS -->
+  <!-- Game viewer backdrop (outside realSite; only ONE copy now) -->
+  <div id="gameViewerBackdrop" aria-hidden="true">
+    <div id="gameViewer" role="dialog" aria-label="Game viewer">
+      <button id="gameViewerClose" aria-label="Close game">✖</button>
+      <!-- iframe injected here -->
     </div>
   </div>
 
-  <!-- Floating Home / Panic Buttons -->
-  <button id="homeFloating" style="position:fixed;bottom:20px;left:20px;z-index:9998;border-radius:10px;padding:10px 15px;background:#1e1e1e;color:#fff;border:none">Home</button>
+  <!-- Floating Home Button -->
+  <button id="homeFloating" style="position:fixed;bottom:20px;left:20px;z-index:9998;border-radius:10px;padding:10px 15px;background:#1e1e1e;color:#fff;border:none">
+    Home
+  </button>
 
   <script>
-    /* ===== Unlock / initial setup ===== */
+    /* ===== LOCK SCREEN / UNLOCK LOGIC ===== */
     (function(){
-      const lockScreen = document.getElementById('lockScreen');
-      const realSite = document.getElementById('realSite');
-      const genericRevealHitbox = document.getElementById('genericRevealHitbox');
-      const progressHitbox = document.getElementById('progressHitbox');
-      const unlockBtn = document.getElementById('unlockBtn');
-      const passwordInput = document.getElementById('passwordInput');
+      const PASSWORD = 'ihatehw385';
+
+      const lockScreen   = document.getElementById('lockScreen');
+      const realSite     = document.getElementById('realSite');
+      const progressHit  = document.getElementById('progressHitbox');
+      const lockOverlay  = document.getElementById('lockOverlay');
+      const unlockBtn    = document.getElementById('unlockBtn');
+      const passwordInput= document.getElementById('passwordInput');
 
       function unlockUI(){
         lockScreen.style.display = 'none';
-        realSite.style.display = 'block';
+        realSite.style.display   = 'block';
         document.body.style.overflow = 'auto';
         window.scrollTo(0,0);
       }
 
-      // Show/hide the overlay (keeps compatibility with previous behavior when clicking background)
-      genericRevealHitbox.addEventListener('click', function(e){
-        // toggle the overlay visibility if someone clicks anywhere on the background
-        const overlay = document.getElementById('lockOverlay');
-        overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
-      });
-
-      // Primary unlock via the overlay input
-      unlockBtn.addEventListener('click', function(){
+      function checkPassword(){
         const pwd = passwordInput.value;
-        if(pwd === 'ihatehw385'){
+        if(pwd === PASSWORD){
           unlockUI();
         } else {
           alert('Incorrect password.');
         }
-      });
+      }
 
-      // Enter key triggers overlay unlock
-      passwordInput.addEventListener('keydown', function(e){
-        if(e.key === 'Enter'){ unlockBtn.click(); }
-      });
-
-      // Expose unlockSite (for compatibility with earlier onclicks)
-      window.unlockSite = function(){
-        const pwd = prompt('Enter password:');
-        if(pwd === 'ihatehw385'){ unlockUI(); }
-        else if(pwd !== null){ alert('Incorrect password.'); }
-      };
-
-      // Special: clicking the progress app hotspot will prompt for the password
-      if(progressHitbox){
-        progressHitbox.addEventListener('click', function(e){
-          // prevent generic reveal from firing
+      // Only clicking Progress Learning shows the overlay
+      if(progressHit){
+        progressHit.addEventListener('click', function(e){
           e.stopPropagation();
-          // Prompt for the password specifically when clicking the Progress Learning icon
-          const pwd = prompt('Enter password to open Progress Learning:');
-          if(pwd === 'ihatehw385'){
-            unlockUI();
-          } else if(pwd !== null){
-            alert('Incorrect password.');
-          }
+          lockOverlay.style.display = 'block';
+          passwordInput.value = '';
+          passwordInput.focus();
         });
-        // keep it keyboard accessible
-        progressHitbox.addEventListener('keydown', function(e){
-          if(e.key === 'Enter' || e.key === ' '){
-            e.preventDefault();
-            progressHitbox.click();
+      }
+
+      if(unlockBtn){
+        unlockBtn.addEventListener('click', function(){
+          checkPassword();
+        });
+      }
+
+      if(passwordInput){
+        passwordInput.addEventListener('keydown', function(e){
+          if(e.key === 'Enter'){
+            checkPassword();
           }
         });
       }
+
+      // Optional: clicking blank area of lock screen hides overlay
+      lockScreen.addEventListener('click', function(e){
+        if(e.target === lockScreen){
+          lockOverlay.style.display = 'none';
+        }
+      });
     })();
+
 
     /* ===== Core UI behavior ===== */
     document.addEventListener('DOMContentLoaded', function () {
 
-      // Dark Mode Toggle (simple class switch)
+      // Dark Mode Toggle
       var darkBtn = document.getElementById('darkModeBtn');
       darkBtn && darkBtn.addEventListener('click', function () {
         document.body.classList.toggle('light');
@@ -409,13 +593,19 @@
 
       // Home buttons
       var homeBtn = document.getElementById('homeBtn');
-      homeBtn && homeBtn.addEventListener('click', function(){ document.getElementById('home').scrollIntoView({behavior:'smooth'});});
+      homeBtn && homeBtn.addEventListener('click', function(){
+        document.getElementById('home').scrollIntoView({behavior:'smooth'});
+      });
       var homeFloating = document.getElementById('homeFloating');
-      homeFloating && homeFloating.addEventListener('click', function(){ document.getElementById('home').scrollIntoView({behavior:'smooth'});});
+      homeFloating && homeFloating.addEventListener('click', function(){
+        document.getElementById('home').scrollIntoView({behavior:'smooth'});
+      });
 
       // Panic button
       var panic = document.getElementById('panicBtn');
-      panic && panic.addEventListener('click', function(){ window.location.href = 'https://classroom.google.com'; });
+      panic && panic.addEventListener('click', function(){
+        window.location.href = 'https://classroom.google.com';
+      });
 
       // SEARCH
       var searchInput = document.getElementById('searchInput');
@@ -434,10 +624,21 @@
       var fileInput = document.getElementById('fileInput');
       var fileInfo = document.getElementById('fileInfo');
       if (emulator && fileInput && fileInfo) {
-        emulator.addEventListener('dragover', function (e) { e.preventDefault(); emulator.classList.add('dragover'); });
-        emulator.addEventListener('dragleave', function () { emulator.classList.remove('dragover'); });
-        emulator.addEventListener('drop', function (e) { e.preventDefault(); emulator.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
-        fileInput.addEventListener('change', function () { handleFile(fileInput.files[0]); });
+        emulator.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          emulator.classList.add('dragover');
+        });
+        emulator.addEventListener('dragleave', function () {
+          emulator.classList.remove('dragover');
+        });
+        emulator.addEventListener('drop', function (e) {
+          e.preventDefault();
+          emulator.classList.remove('dragover');
+          handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', function () {
+          handleFile(fileInput.files[0]);
+        });
         function handleFile(file) {
           if(!file) return;
           fileInfo.textContent = 'File selected: ' + file.name + ' (' + file.size + ' bytes)';
@@ -453,16 +654,11 @@
           if (e.target === backdrop) closeGame();
         });
       }
-
-      // Also wire the inline close button inside the nested viewer (if used)
-      var viewerCloseInside = document.querySelector('#gameViewer #gameViewerClose');
-      if(viewerCloseInside){
-        viewerCloseInside.addEventListener('click', closeGame);
-      }
     });
 
     /* ===== Game Viewer functions ===== */
     var currentViewerIframe = null;
+
     function openGame(url) {
       // if site still locked, prevent
       if(document.getElementById('realSite').style.display === 'none'){
@@ -470,49 +666,41 @@
         return;
       }
       var backdrop = document.getElementById('gameViewerBackdrop');
-      var viewer = document.getElementById('gameViewer');
+      var viewer   = document.getElementById('gameViewer');
+
       // remove previous iframe
       if (currentViewerIframe){
         try{ currentViewerIframe.remove(); }catch(e){}
         currentViewerIframe = null;
       }
+
       // create iframe
       var iframe = document.createElement('iframe');
       iframe.src = url;
       iframe.setAttribute('allowfullscreen','');
       iframe.setAttribute('frameborder','0');
       iframe.style.background = '#000';
-      // append iframe after close button
-      var closeBtn = document.getElementById('gameViewerClose');
-      if(closeBtn && closeBtn.parentNode){
-        viewer.appendChild(iframe);
-      } else {
-        viewer.appendChild(iframe);
-      }
+
+      viewer.appendChild(iframe);
       currentViewerIframe = iframe;
       backdrop.style.display = 'flex';
       backdrop.setAttribute('aria-hidden','false');
       document.body.style.overflow = 'hidden';
       try{ iframe.focus(); }catch(e){}
     }
-    window.openGame = openGame; // expose
+    window.openGame = openGame;
 
     function closeGame(){
       var backdrop = document.getElementById('gameViewerBackdrop');
-      var viewer = document.getElementById('gameViewer');
+      var viewer   = document.getElementById('gameViewer');
       backdrop.style.display = 'none';
-      viewer.querySelectorAll('iframe').forEach(function(ifr){ try{ ifr.remove(); }catch(e){} });
+      viewer.querySelectorAll('iframe').forEach(function(ifr){
+        try{ ifr.remove(); }catch(e){}
+      });
       currentViewerIframe = null;
       document.body.style.overflow = 'auto';
     }
-    window.closeGame = closeGame; // expose
-
-    /* ===== Helper: ensure any existing duplicate iframe code removed on load ===== */
-    window.addEventListener('load', function(){
-      // ensure lockOverlay prompt is visible initially
-      var overlay = document.getElementById('lockOverlay');
-      if(overlay) overlay.style.display = 'block';
-    });
+    window.closeGame = closeGame;
   </script>
 </body>
 </html>
